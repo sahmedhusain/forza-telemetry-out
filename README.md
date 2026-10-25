@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/assets/brand.svg" width="600" alt="Forza Telemetry Out — independent Horizon 6 companion"></p>
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/logos/forza-horizon-6-dark.svg"><img src="public/assets/logos/forza-horizon-6-light.svg" width="440" alt="Forza Horizon 6"></picture><br><strong>TELEMETRY OUT</strong><br><sub>Independent desktop and browser telemetry companion</sub></p>
 
 # Forza Telemetry Out
 
@@ -6,18 +6,18 @@ An independent **Forza Horizon 6** telemetry cockpit for your desktop and browse
 
 [Getting started](GETTING_STARTED.md) · [Documentation](docs/README.md) · [Every packet field](docs/PROTOCOL.md) · [Analytics](docs/ANALYTICS.md) · [Changelog](CHANGELOG.md) · [Build & release](docs/RELEASING.md) · [MIT license](LICENSE)
 
-![Version](https://img.shields.io/badge/version-1.6.0-ff376c)
+![Version](https://img.shields.io/badge/version-1.6.1-ff376c)
 ![License](https://img.shields.io/badge/license-MIT-d9fc78)
 ![Runtime](https://img.shields.io/badge/Node.js-22%2B-6cdde4)
 [![CI](https://github.com/sahmedhusain/forza-telemetry-out/actions/workflows/ci.yml/badge.svg)](https://github.com/sahmedhusain/forza-telemetry-out/actions/workflows/ci.yml)
 
 **Desktop + web · 26 widgets · 88 raw fields · 4 interface languages · dark/light themes · CSV/JSON exports**
 
-![Version 1.6 dashboard, widget editing, presets and four language settings](docs/assets/configuration.gif)
+![Version 1.6.1 fitted widget layouts, editing and four language settings](docs/assets/configuration.gif)
 
-The animation shows the current app waiting for a game connection. [Static dashboard PNG](docs/assets/dashboard.png) · [Screenshot gallery](#screenshots). No generated driving data is shown.
+The animation shows fitted custom widget layouts and settings with the current app waiting for a game connection. [Static dashboard PNG](docs/assets/dashboard.png) · [Screenshot gallery](#screenshots). No generated driving data is shown.
 
-> Fan-made companion, not an official Forza product. Forza, Horizon, Xbox and related names belong to their respective owners. The application mark and animation are original companion artwork; no official endorsement is implied.
+> Fan-made companion, not an official Forza product. Forza, Horizon, Xbox and related names belong to their respective owners. Official FH6 logos identify the supported game; the independent dashboard and companion app icon are project artwork. No official endorsement is implied.
 
 ## Start in two minutes
 
@@ -54,7 +54,7 @@ Dashboard is the default home page. It offers **26 widgets**, including engine/s
 
 The overview scrolls internally with hidden tracks. Focus the widget grid and use Page Up/Down, or use wheel/touch gestures. The current widget selection, order and dimensions use `forza.dashboard.v1` in localStorage; storage failures are shown and the layout remains usable for the session. Each browser/device has its own layout.
 
-The refreshed companion identity uses an original animated slash mark, numbered panels and colored subsystem accents. Layout changes animate; tire tread motion follows each reported angular velocity and stops with stale/inactive data. Reduced-motion settings disable decorative/tread motion. These remain illustrations, with raw numbers available alongside them.
+The header uses official FH6 logo variants for dark and light themes, with a separate Telemetry Out label. Numbered panels and colored subsystem accents organize the instruments. Layout changes animate; tire tread motion follows each reported angular velocity and stops with stale/inactive data. Reduced-motion settings disable decorative/tread motion. These remain illustrations, with raw numbers available alongside them.
 
 ## Tabs, customization and connection
 
@@ -108,13 +108,13 @@ No tire-wear or track-ID values are invented: they are absent from this format. 
 
 ## Screenshots
 
-All images below were captured from **1.6.0**. Instruments show the real waiting state until FH6 sends packets. Click an image to open the full PNG; the [complete image index](docs/README.md#current-images) includes all four language settings.
+All images below were captured from **1.6.1**. Instruments show the real waiting state until FH6 sends packets. Click an image to open the full PNG; the [complete image index](docs/README.md#current-images) includes all four language settings.
 
-| Drive dashboard · dark | Drive dashboard · light |
+| Driving widgets · dark | Driving widgets · light |
 |---|---|
 | [![Dark dashboard](docs/assets/dashboard.png)](docs/assets/dashboard.png) | [![Light dashboard](docs/assets/dashboard-light.png)](docs/assets/dashboard-light.png) |
 
-| Edit widget layout | Engineering preset |
+| Edit widget layout | Chassis and slip widgets |
 |---|---|
 | [![Widget size and reorder controls](docs/assets/dashboard-edit.png)](docs/assets/dashboard-edit.png) | [![Engineering dashboard](docs/assets/dashboard-engineering.png)](docs/assets/dashboard-engineering.png) |
 
@@ -122,7 +122,7 @@ All images below were captured from **1.6.0**. Instruments show the real waiting
 |---|---|
 | [![Arabic light settings](docs/assets/settings-ar-light.png)](docs/assets/settings-ar-light.png) | [![French dark settings](docs/assets/settings-fr-dark.png)](docs/assets/settings-fr-dark.png) |
 
-<p align="center"><a href="docs/assets/dashboard-phone-ar.png"><img src="docs/assets/dashboard-phone-ar.png" width="260" alt="Arabic light dashboard at a 390 by 844 phone viewport"></a></p>
+<p align="center"><a href="docs/assets/dashboard-phone-ar.png"><img src="docs/assets/dashboard-phone-ar.png" width="260" alt="Arabic light tire widget at a 390 by 844 phone viewport"></a></p>
 
 ## Desktop and web: one application
 
@@ -226,13 +226,13 @@ Build both a Windows x64 Setup installer and a portable executable:
 npm run dist:win
 ```
 
-Outputs are `dist/Forza-Telemetry-Out-1.6.0-Windows-x64-Setup.exe` and `dist/Forza-Telemetry-Out-1.6.0-Windows-x64-Portable.exe`. The installed desktop app includes the receiver; end users do not need Node.js. Local builds are unsigned. Only distribute artifacts after verifying them on Windows.
+Outputs are `dist/Forza-Telemetry-Out-1.6.1-Windows-x64-Setup.exe` and `dist/Forza-Telemetry-Out-1.6.1-Windows-x64-Portable.exe`. The installed desktop app includes the receiver; end users do not need Node.js. Local builds are unsigned. The preview release identifies the unverified Windows/native-game checks; signed production distribution requires target-platform verification.
 
 Check [GitHub Releases](https://github.com/sahmedhusain/forza-telemetry-out/releases) for uploaded builds and their release notes. Executables are build artifacts and are not committed to the source repository. A source push alone does not publish an installer.
 
 ## Version and releases
 
-Current source version: **1.6.0**. The existing 1.0.0 prototype has been updated around the supplied FH6 specification. [Changelog](CHANGELOG.md) records the changes. [Release instructions](docs/RELEASING.md) describe local packaging and the tag-driven Windows/macOS/Linux workflow. No public release or signed installer is claimed merely because a version number exists. [Repository releases](https://github.com/sahmedhusain/forza-telemetry-out/releases).
+Current source version: **1.6.1**. The existing 1.0.0 prototype has been updated around the supplied FH6 specification. [Changelog](CHANGELOG.md) records the changes. [Release instructions](docs/RELEASING.md) describe local packaging and the tag-driven Windows/macOS/Linux workflow. Preview release notes state the actual platform checks and remaining limitations; a version number alone does not establish hardware compatibility. [Repository releases](https://github.com/sahmedhusain/forza-telemetry-out/releases).
 
 ## Contributing
 

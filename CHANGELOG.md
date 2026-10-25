@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.1 — 2026-10-25
+
+- Replace the hand-lettered header and README mark with unmodified official FH6 logo variants for light/dark themes; retain a separate Telemetry Out label, independent-project notice and companion app icon.
+- Give widget editor controls their own height instead of squeezing instrument content. Keep tire/slip widgets above a content-safe minimum while preserving saved layout values.
+- Recapture README GIF/PNGs with fitted custom layouts and complete widget rows; retain current language/RTL examples and static alternatives.
+- Add GitHub About description, documentation website and topics, and prepare a clearly labeled unsigned preview release with downloadable desktop builds and checksums.
+
 ## 1.6.0 — 2026-10-25
 
 - Add a default Dashboard with 26 shared live-data widgets and Drive/Engineering/All presets. Add/hide, drag or keyboard/touch reorder, width/height controls and validated per-device persistence.

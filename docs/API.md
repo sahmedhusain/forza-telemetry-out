@@ -1,4 +1,4 @@
-# Local HTTP and WebSocket API — 1.6.0
+# Local HTTP and WebSocket API — 1.6.1
 
 The browser and Electron renderer use the same Node.js receiver. The default base URL is `http://127.0.0.1:3050`; use your configured `WEB_PORT`. This API is for a trusted local client. There is no authentication or per-client recording state. Enabling LAN access exposes telemetry, network details, shared recording controls and exports to devices that can reach the receiver.
 

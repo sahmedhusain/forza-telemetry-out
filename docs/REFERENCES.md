@@ -1,6 +1,6 @@
 # Reference review
 
-Sources reviewed 25 October 2026; retained for version **1.6.0**. [Comparative review](RESEARCH.md) · [Current implementation and limits](ANALYTICS.md)
+Sources reviewed 25 October 2026; retained for version **1.6.1**. [Comparative review](RESEARCH.md) · [Current implementation and limits](ANALYTICS.md)
 
 - [Official FH6 Data Out documentation](https://support.forza.net/hc/en-us/articles/51744149102611-Forza-Horizon-6-Data-Out-Documentation): authoritative field list, configuration, stream lifecycle and reserved port range. This takes priority over third-party setup examples.
 - [co-driver](https://github.com/Ojansen/co-driver): emphasizes tuning relationships, per-corner measurements, session analysis and second-screen use. It informed the focus on relationships and explanations. Its multi-game, garage and tuning workbench features were not copied or claimed here.

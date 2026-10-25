@@ -1,24 +1,19 @@
-# Validation — version 1.6.0
+# Validation — version 1.6.1
 
-Checked 25 October 2026. [Current overview evidence](evidence/review-160.json), [prior channel-review evidence](evidence/review-150.json), [data/analysis guide](ANALYTICS.md).
+Checked 25 October 2026. [Current polish evidence](evidence/review-161.json) · [1.6 widget evidence](evidence/review-160.json) · [1.5 channel-review evidence](evidence/review-150.json) · [Documentation index](README.md)
 
-The [documentation index](README.md) links current user guides and media. Versioned files under `evidence/` preserve earlier checks and are not a claim that every old screenshot represents the current layout.
+## Completed locally
 
-## Completed
+- All 29 automated tests pass: packet decoding, recorder, history, analytics, channel review, translations, RPM limits, local UDP/WebSocket pipeline and six widget-layout tests.
+- All 26 widget bodies checked at 390×844, 844×390, 768×1024, 1440×900 and 1920×1080, in/out of edit mode with extra-large numbers. Tire/slip widgets were saved at 3 columns/200px: their content-safe display floors retained all corners and plot labels. No widget body escaped its frame, duplicate IDs or document overflow were found. Scrollbar tracks stayed hidden.
+- Inspected English dark and Arabic light layouts. Both official logo variants loaded. Header home/focus controls and detail navigation retain their existing behavior. Editor controls add space above instruments.
+- Current GIF and nine PNGs captured from 1.6.1 with no generated telemetry. The GIF has eight 1440×1080 frames over 24 seconds; fitted custom layouts end at complete widget rows. The Arabic phone tire layout fits 390×844. These layouts demonstrate customization and are not the default Drive/Engineering presets.
+- Packaged macOS arm64 app launched: Dashboard active, 26 available widgets, 88 raw rows, four languages, loaded logos, hidden scrollbar tracks and no audio/demo controls. All 41 bundled application/notice files matched source byte-for-byte.
+- Local documentation/image links, anchors, all 88 protocol rows, source/lockfile versions and evidence records checked. Local `.env`, telemetry data and build output stay out of source commits. An older address screenshot with LAN details is retained outside publication.
+- GitHub About description, documentation website and topics updated and verified. The prior source commit's Linux/Windows/macOS CI passed. Current platform packaging/checksum results are recorded separately in GitHub Actions and the preview release notes.
 
-- 29 automated tests pass: existing decoder, recorder, history, analytics, channel review, translations, RPM limits and local UDP pipeline plus six widget-layout tests for IDs/sizes, presets, empty recovery, ordering, serialization and invalid input.
-- Drive/Engineering/All layouts checked at 390×844, 844×390, 768×1024, 1440×900 and 1920×1080 with extra-large values. No horizontal document/grid/widget-shell overflow. Arabic light editing, French tablet and English dark layouts inspected. Engineering widths were balanced and rechecked at desktop size.
-- GUI reorder and size controls saved Engine at 8 columns/480px and retained it on reload. Native DataTransfer drag handlers moved a widget. Empty layout/Add recovery and simulated storage-failure recovery remained usable.
-- All 26 modules mounted without duplicate IDs. The engine canvas kept its identity; returning to detail screens restored both front and rear tire pairs and the engine panel. Recording, raw tables, graphs and history keep their original nodes/IDs.
-- Tread transform changed with positive wheel angular velocity, stopped for stale input and stayed fixed under reduced motion. Brand/layout motion honors reduced-motion settings. Real-time physical behavior still needs a game capture.
-- Populated rendering checked with a clearly labeled isolated UI fixture; it never entered the UDP receiver or saved history and was removed by reload. The animated README uses actual empty-state layout/edit/preset screenshots.
-- Windows Setup/Portable and macOS arm64 bundles built. All 39 application/notice files compared with packaged source; SHA-256 sums are in dist/SHA256SUMS-1.6.0.txt. Native macOS launch checks the default Dashboard, 26 available widgets, 88 raw fields and absent audio/demo controls.
-- JavaScript syntax, whitespace and frontend evidence-record checks pass.
-- Final documentation pass: all 29 tests rerun successfully; local document/image links, all 88 protocol rows and source/lockfile versions checked. Current PNGs cover Drive dark/light, editing, Engineering, all four language settings and an actual 390×844 Arabic phone viewport. The README GIF has eight 1440×900 frames over 24 seconds, captured without generating telemetry.
-- Local `.env`, cumulative data and build output are excluded from source publication. An older address screenshot containing LAN details was retained outside the repository and replaced with a current receiver-controls capture; unused prototype GIFs were also retained outside publication.
+## Limits
 
-## Not verified
+Real FH6 driving/hardware behavior, physical packet endian assumption, Windows/Linux application execution, OS firewall prompts, full screen-reader QA and independent native-language review remain untested. Builds are unsigned. Publishing a preview does not complete these checks.
 
-Real FH6 driving/hardware behavior, physical packet endian assumption, Windows/Linux execution, firewall prompts, full screen-reader QA and independent native-language review remain untested. No public release was published; builds are unsigned.
-
-Layout is per-browser/device. Browser-local review/recording limits and cumulative-history scope remain documented in ANALYTICS.md. Tire motion/steering are illustrations; pressure, camber, wear and per-tire force are not fabricated.
+Layouts are per browser/device. Bounded recordings, browser review windows and cumulative history have separate scopes; see [analytics and storage](ANALYTICS.md). Tire motion/steering remain illustrations; pressure, camber, wear and per-tire force are unavailable.

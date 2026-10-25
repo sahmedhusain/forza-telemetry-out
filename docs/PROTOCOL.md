@@ -1,6 +1,6 @@
 # FH6 packet reference
 
-Applies to **1.6.0**. [Setup](../GETTING_STARTED.md) · [Calculations](ANALYTICS.md) · [Local API](API.md) · [Documentation index](README.md)
+Applies to **1.6.1**. [Setup](../GETTING_STARTED.md) · [Calculations](ANALYTICS.md) · [Local API](API.md) · [Documentation index](README.md)
 
 Source: [Forza Support — FH6 Data Out](https://support.forza.net/hc/en-us/articles/51744149102611-Forza-Horizon-6-Data-Out-Documentation), checked 25 October 2026.
 

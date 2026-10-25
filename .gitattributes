@@ -1,0 +1,2 @@
+# Preserve the official SVG files byte-for-byte, including upstream whitespace.
+public/assets/logos/forza-horizon-6-*.svg -whitespace

@@ -1,6 +1,6 @@
 {
   "name": "forza-telemetry-out",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Independent Forza Horizon 6 telemetry cockpit for desktop and browser",
   "main": "main.js",
   "scripts": {

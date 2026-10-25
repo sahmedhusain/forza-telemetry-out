@@ -1,4 +1,4 @@
-# Reading the telemetry workspace — 1.6.0
+# Reading the telemetry workspace — 1.6.1
 
 [Setup](../GETTING_STARTED.md) · [Documentation index](README.md) · [Packet fields](PROTOCOL.md) · [Local API](API.md)
 
@@ -149,6 +149,8 @@ Focus screen hides navigation and branding while retaining connection freshness,
 ## Widget layout and motion
 
 The overview offers 26 widgets. Drive is a compact starting set; Engineering emphasizes chassis/graphs; All widgets exposes every available module. Add/hide, drag reorder or use up/down buttons, then choose width and height. The grid preserves DOM order and keyboard alternatives. Desktop widths use a 12-column grid; tablets adapt to two columns and phones stack at full width. Saved dimensions remain available when returning to a larger screen. Scroll remains functional with scrollbar tracks hidden.
+
+Editor controls add their own space above each instrument. Tire/slip widgets have a minimum displayed height to keep all four corners and plot labels visible; selecting a smaller saved height does not clip those essentials. The saved value is retained. Large raw tables and recording/history panels still scroll internally when needed. A viewport can show part of the next row while scrolling; current README captures use fitted custom layouts so their images end at whole panels.
 
 Layouts are validated against known widget IDs, supported numeric sizes and collection limits. Explicit empty layouts show Add/Reset recovery; corrupt JSON or unsupported outer formats use defaults. Preferences store no telemetry. Layout resets/presets do not delete recordings, cumulative history, held analysis or game packets. Widgets reuse existing instruments; graphs, raw tables and history continue updating when displayed in Dashboard. Compact tire tiles show temperature, suspension position, slip and contact state; axle screens retain full corner detail.
 

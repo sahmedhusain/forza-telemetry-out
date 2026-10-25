@@ -1,0 +1,71 @@
+{
+  "contract": "../DESIGN.md v1.6.1: official light/dark FH6 logos, editor space outside instruments, safe tire/slip minimums, complete captured widget rows.",
+  "targetViewports": [
+    "390x844",
+    "844x390",
+    "768x1024",
+    "1440x900",
+    "1920x1080"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Header retains its labeled home link; theme-specific images load. Existing labeled controls and keyboard alternatives retained. Reduced motion and hidden-scrollbar preferences retained. Full screen-reader/native-language review remains unperformed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "All 26 widget bodies checked at five viewports in and out of edit mode, extra-large values, tire/slip saved at 3 columns/200px: no bodies escape frames, four tire cards fit, slip labels fit, no duplicate IDs or horizontal document overflow. Arabic light checked at 390x844."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Both bundled logo SVGs loaded in the browser and packaged macOS app. Renderer mounts the dashboard and all 88 channel rows with no game connected."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "Actual waiting state retained; every current README PNG/GIF uses no game stream or generated data."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "29 automated tests pass, including invalid/oversized layouts, unsupported packets and occupied-port rollback. These layout/style changes preserve existing recovery controls."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "Unavailable values remain em dashes. Small saved tire/slip heights use a content-safe display floor without changing stored values; graphs show complete empty axes/circles."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "29 tests pass; packaged macOS launch reports 26 available widgets, 88 rows, all four languages and loaded official logos. Complete editor/corner/slip capture inspected; About details verified on GitHub."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "Logo/layout changes add no runtime permissions or network endpoints. Repository metadata/release updates are directly requested by the user."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "390x844",
+      "artifact": "polish-phone-v161.png",
+      "observation": "Arabic light, full four-tire panel and official black logo."
+    },
+    {
+      "viewport": "844x390",
+      "artifact": "polish-landscape-v161.png",
+      "observation": "Focused powertrain fits landscape; source status and exit remain visible."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "polish-tablet-v161.png",
+      "observation": "Full tire panel at tablet width with logo and navigation."
+    },
+    {
+      "viewport": "1440x900",
+      "artifact": "polish-desktop-v161.png",
+      "observation": "Complete Engine/Tires/Slip editor; panels contain their bodies."
+    },
+    {
+      "viewport": "1920x1080",
+      "artifact": "polish-wide-v161.png",
+      "observation": "Wide editor with all tire cards and slip circles visible."
+    }
+  ]
+}

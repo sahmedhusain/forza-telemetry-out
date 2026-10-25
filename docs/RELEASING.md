@@ -2,7 +2,7 @@
 
 [Documentation index](README.md) · [Changelog](../CHANGELOG.md) · [Validation](VALIDATION.md)
 
-Version 1.6.0 is source code, not evidence of a published release. Use semantic versioning: patch for compatible fixes, minor for added capability, major for breaking configuration/API changes.
+Version 1.6.1 is source code, not evidence of a published release. Use semantic versioning: patch for compatible fixes, minor for added capability, major for breaking configuration/API changes.
 
 ## Local build
 
@@ -22,7 +22,7 @@ The `CI` workflow tests Node 22 on Linux, Windows and macOS. `Release` runs on a
 1. Update `package.json`, lockfile, changelog and visible version labels together.
 2. Run tests; validate live FH6 packets and desktop/browser behavior on the target OS. Refresh README GIF/PNGs and documentation when the UI or behavior changes.
 3. Commit the reviewed changes.
-4. Create and push a matching tag, for example `v1.6.0`, when ready.
+4. Create and push a matching tag, for example `v1.6.1`, when ready.
 5. Inspect the draft artifacts, install and launch them on each target OS, and add release notes.
 6. Publish the draft only after verification.
 
@@ -47,13 +47,15 @@ Windows x64 Setup and Portable targets can be requested using `npm run dist:win`
 
 ## Artifact names and integrity
 
-For 1.6.0 the Windows x64 outputs are:
+For 1.6.1 the Windows x64 outputs are:
 
 ```text
-dist/Forza-Telemetry-Out-1.6.0-Windows-x64-Setup.exe
-dist/Forza-Telemetry-Out-1.6.0-Windows-x64-Portable.exe
+dist/Forza-Telemetry-Out-1.6.1-Windows-x64-Setup.exe
+dist/Forza-Telemetry-Out-1.6.1-Windows-x64-Portable.exe
 ```
 
 macOS and Linux filenames use `Forza-Telemetry-Out-<version>-<os>-<arch>.<ext>`. Choose the artifact for your platform and CPU. `npm run package` produces an unpacked host application for local smoke checks; it does not produce every platform's installer.
 
-Attach SHA-256 checksums alongside distributed binaries. On macOS/Linux, compute a checksum with `shasum -a 256 PATH_TO_ARTIFACT`; on Windows PowerShell use `Get-FileHash PATH_TO_ARTIFACT -Algorithm SHA256`. Compare the complete hash against the trusted release's checksum. A hash detects changed bytes; it is not code signing or proof of real-game validation. Checksum files in local `dist/` are not automatically generated/uploaded by the current workflow.
+The release workflow writes a separate `SHA256SUMS-<platform>-<arch>.txt` file on each runner and uploads it with the matching installers. It fails if no current-version installer exists or an artifact is empty. For local builds, compute a checksum with `shasum -a 256 PATH_TO_ARTIFACT` on macOS/Linux or `Get-FileHash PATH_TO_ARTIFACT -Algorithm SHA256` in Windows PowerShell. Compare the complete hash against the trusted release's checksum. A hash detects changed bytes; it is not code signing or proof of real-game validation.
+
+For a preview, keep the draft until packaging completes and the files/notes have been checked. Mark it as a prerelease when publishing, state unsigned/untested limits, and distinguish local unit tests from real-game and native installer checks. A preview is not a production compatibility guarantee.

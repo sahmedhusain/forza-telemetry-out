@@ -1,6 +1,6 @@
 # Getting started
 
-For version **1.6.0**. [Feature tour and screenshots](README.md) · [Documentation index](docs/README.md) · [Analytics and limits](docs/ANALYTICS.md)
+For version **1.6.1**. [Feature tour and screenshots](README.md) · [Documentation index](docs/README.md) · [Analytics and limits](docs/ANALYTICS.md)
 
 ## Requirements
 
