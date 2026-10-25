@@ -5,8 +5,10 @@
  * the native hardware-accelerated Forza Telemetry HUD desktop window.
  */
 
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
+if (app.isPackaged) require('dotenv').config({ path: path.join(app.getPath('userData'), '.env') });
+if (app.isPackaged && !process.env.FORZA_DATA_DIR) process.env.FORZA_DATA_DIR = path.join(app.getPath('userData'),'data');
 const server = require('./server/index');
 
 let mainWindow = null;
@@ -15,21 +17,23 @@ function createWindow(port) {
   mainWindow = new BrowserWindow({
     width: 1366,
     height: 840,
-    minWidth: 1080,
-    minHeight: 700,
+    minWidth: 390,
+    minHeight: 600,
     backgroundColor: '#0a0b10',
     title: 'Forza Telemetry Out | Apex HUD & Analytics',
-    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
-    trafficLightPosition: { x: 18, y: 16 },
+    titleBarStyle: 'default',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      sandbox: true
     },
     autoHideMenuBar: true,
     show: false
   });
 
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  mainWindow.webContents.on('will-navigate', (event) => event.preventDefault());
   // Load dashboard on active port
   mainWindow.loadURL(`http://localhost:${port}`);
 
@@ -88,6 +92,8 @@ app.whenReady().then(async () => {
     });
   } catch (err) {
     console.error('[Electron] Failed to start server:', err);
+    dialog.showErrorBox('Cannot start telemetry receiver', err.message);
+    app.quit();
   }
 });
 
@@ -96,3 +102,5 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+app.on('before-quit', () => server.stop());

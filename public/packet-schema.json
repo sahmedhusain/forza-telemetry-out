@@ -1,0 +1,618 @@
+[
+  {
+    "name": "IsRaceOn",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Session",
+    "offset": 0
+  },
+  {
+    "name": "TimestampMS",
+    "type": "U32",
+    "unit": "ms",
+    "group": "Session",
+    "offset": 4
+  },
+  {
+    "name": "EngineMaxRpm",
+    "type": "F32",
+    "unit": "rpm",
+    "group": "Engine",
+    "offset": 8
+  },
+  {
+    "name": "EngineIdleRpm",
+    "type": "F32",
+    "unit": "rpm",
+    "group": "Engine",
+    "offset": 12
+  },
+  {
+    "name": "CurrentEngineRpm",
+    "type": "F32",
+    "unit": "rpm",
+    "group": "Engine",
+    "offset": 16
+  },
+  {
+    "name": "AccelerationX",
+    "type": "F32",
+    "unit": "m/s\u00b2",
+    "group": "Dynamics",
+    "offset": 20
+  },
+  {
+    "name": "AccelerationY",
+    "type": "F32",
+    "unit": "m/s\u00b2",
+    "group": "Dynamics",
+    "offset": 24
+  },
+  {
+    "name": "AccelerationZ",
+    "type": "F32",
+    "unit": "m/s\u00b2",
+    "group": "Dynamics",
+    "offset": 28
+  },
+  {
+    "name": "VelocityX",
+    "type": "F32",
+    "unit": "m/s",
+    "group": "Dynamics",
+    "offset": 32
+  },
+  {
+    "name": "VelocityY",
+    "type": "F32",
+    "unit": "m/s",
+    "group": "Dynamics",
+    "offset": 36
+  },
+  {
+    "name": "VelocityZ",
+    "type": "F32",
+    "unit": "m/s",
+    "group": "Dynamics",
+    "offset": 40
+  },
+  {
+    "name": "AngularVelocityX",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Dynamics",
+    "offset": 44
+  },
+  {
+    "name": "AngularVelocityY",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Dynamics",
+    "offset": 48
+  },
+  {
+    "name": "AngularVelocityZ",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Dynamics",
+    "offset": 52
+  },
+  {
+    "name": "Yaw",
+    "type": "F32",
+    "unit": "rad",
+    "group": "Dynamics",
+    "offset": 56
+  },
+  {
+    "name": "Pitch",
+    "type": "F32",
+    "unit": "rad",
+    "group": "Dynamics",
+    "offset": 60
+  },
+  {
+    "name": "Roll",
+    "type": "F32",
+    "unit": "rad",
+    "group": "Dynamics",
+    "offset": 64
+  },
+  {
+    "name": "NormalizedSuspensionTravelFrontLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 68
+  },
+  {
+    "name": "NormalizedSuspensionTravelFrontRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 72
+  },
+  {
+    "name": "NormalizedSuspensionTravelRearLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 76
+  },
+  {
+    "name": "NormalizedSuspensionTravelRearRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 80
+  },
+  {
+    "name": "TireSlipRatioFrontLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 84
+  },
+  {
+    "name": "TireSlipRatioFrontRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 88
+  },
+  {
+    "name": "TireSlipRatioRearLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 92
+  },
+  {
+    "name": "TireSlipRatioRearRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 96
+  },
+  {
+    "name": "WheelRotationSpeedFrontLeft",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Wheels",
+    "offset": 100
+  },
+  {
+    "name": "WheelRotationSpeedFrontRight",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Wheels",
+    "offset": 104
+  },
+  {
+    "name": "WheelRotationSpeedRearLeft",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Wheels",
+    "offset": 108
+  },
+  {
+    "name": "WheelRotationSpeedRearRight",
+    "type": "F32",
+    "unit": "rad/s",
+    "group": "Wheels",
+    "offset": 112
+  },
+  {
+    "name": "WheelOnRumbleStripFrontLeft",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 116
+  },
+  {
+    "name": "WheelOnRumbleStripFrontRight",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 120
+  },
+  {
+    "name": "WheelOnRumbleStripRearLeft",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 124
+  },
+  {
+    "name": "WheelOnRumbleStripRearRight",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 128
+  },
+  {
+    "name": "WheelInPuddleFrontLeft",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 132
+  },
+  {
+    "name": "WheelInPuddleFrontRight",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 136
+  },
+  {
+    "name": "WheelInPuddleRearLeft",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 140
+  },
+  {
+    "name": "WheelInPuddleRearRight",
+    "type": "S32",
+    "unit": "flag",
+    "group": "Wheels",
+    "offset": 144
+  },
+  {
+    "name": "SurfaceRumbleFrontLeft",
+    "type": "F32",
+    "unit": "unitless",
+    "group": "Wheels",
+    "offset": 148
+  },
+  {
+    "name": "SurfaceRumbleFrontRight",
+    "type": "F32",
+    "unit": "unitless",
+    "group": "Wheels",
+    "offset": 152
+  },
+  {
+    "name": "SurfaceRumbleRearLeft",
+    "type": "F32",
+    "unit": "unitless",
+    "group": "Wheels",
+    "offset": 156
+  },
+  {
+    "name": "SurfaceRumbleRearRight",
+    "type": "F32",
+    "unit": "unitless",
+    "group": "Wheels",
+    "offset": 160
+  },
+  {
+    "name": "TireSlipAngleFrontLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 164
+  },
+  {
+    "name": "TireSlipAngleFrontRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 168
+  },
+  {
+    "name": "TireSlipAngleRearLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 172
+  },
+  {
+    "name": "TireSlipAngleRearRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 176
+  },
+  {
+    "name": "TireCombinedSlipFrontLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 180
+  },
+  {
+    "name": "TireCombinedSlipFrontRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 184
+  },
+  {
+    "name": "TireCombinedSlipRearLeft",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 188
+  },
+  {
+    "name": "TireCombinedSlipRearRight",
+    "type": "F32",
+    "unit": "ratio",
+    "group": "Wheels",
+    "offset": 192
+  },
+  {
+    "name": "SuspensionTravelMetersFrontLeft",
+    "type": "F32",
+    "unit": "m",
+    "group": "Wheels",
+    "offset": 196
+  },
+  {
+    "name": "SuspensionTravelMetersFrontRight",
+    "type": "F32",
+    "unit": "m",
+    "group": "Wheels",
+    "offset": 200
+  },
+  {
+    "name": "SuspensionTravelMetersRearLeft",
+    "type": "F32",
+    "unit": "m",
+    "group": "Wheels",
+    "offset": 204
+  },
+  {
+    "name": "SuspensionTravelMetersRearRight",
+    "type": "F32",
+    "unit": "m",
+    "group": "Wheels",
+    "offset": 208
+  },
+  {
+    "name": "CarOrdinal",
+    "type": "S32",
+    "unit": "integer",
+    "group": "Vehicle",
+    "offset": 212
+  },
+  {
+    "name": "CarClass",
+    "type": "S32",
+    "unit": "integer",
+    "group": "Vehicle",
+    "offset": 216
+  },
+  {
+    "name": "CarPerformanceIndex",
+    "type": "S32",
+    "unit": "integer",
+    "group": "Vehicle",
+    "offset": 220
+  },
+  {
+    "name": "DrivetrainType",
+    "type": "S32",
+    "unit": "integer",
+    "group": "Vehicle",
+    "offset": 224
+  },
+  {
+    "name": "NumCylinders",
+    "type": "S32",
+    "unit": "integer",
+    "group": "Vehicle",
+    "offset": 228
+  },
+  {
+    "name": "CarGroup",
+    "type": "U32",
+    "unit": "identifier",
+    "group": "Vehicle",
+    "offset": 232
+  },
+  {
+    "name": "SmashableVelDiff",
+    "type": "F32",
+    "unit": "m/s",
+    "group": "Collision",
+    "offset": 236
+  },
+  {
+    "name": "SmashableMass",
+    "type": "F32",
+    "unit": "kg",
+    "group": "Collision",
+    "offset": 240
+  },
+  {
+    "name": "PositionX",
+    "type": "F32",
+    "unit": "m",
+    "group": "Dynamics",
+    "offset": 244
+  },
+  {
+    "name": "PositionY",
+    "type": "F32",
+    "unit": "m",
+    "group": "Dynamics",
+    "offset": 248
+  },
+  {
+    "name": "PositionZ",
+    "type": "F32",
+    "unit": "m",
+    "group": "Dynamics",
+    "offset": 252
+  },
+  {
+    "name": "Speed",
+    "type": "F32",
+    "unit": "m/s",
+    "group": "Engine",
+    "offset": 256
+  },
+  {
+    "name": "Power",
+    "type": "F32",
+    "unit": "W",
+    "group": "Engine",
+    "offset": 260
+  },
+  {
+    "name": "Torque",
+    "type": "F32",
+    "unit": "N\u00b7m",
+    "group": "Engine",
+    "offset": 264
+  },
+  {
+    "name": "TireTempFrontLeft",
+    "type": "F32",
+    "unit": "raw (unit unspecified)",
+    "group": "Wheels",
+    "offset": 268
+  },
+  {
+    "name": "TireTempFrontRight",
+    "type": "F32",
+    "unit": "raw (unit unspecified)",
+    "group": "Wheels",
+    "offset": 272
+  },
+  {
+    "name": "TireTempRearLeft",
+    "type": "F32",
+    "unit": "raw (unit unspecified)",
+    "group": "Wheels",
+    "offset": 276
+  },
+  {
+    "name": "TireTempRearRight",
+    "type": "F32",
+    "unit": "raw (unit unspecified)",
+    "group": "Wheels",
+    "offset": 280
+  },
+  {
+    "name": "Boost",
+    "type": "F32",
+    "unit": "psi",
+    "group": "Engine",
+    "offset": 284
+  },
+  {
+    "name": "Fuel",
+    "type": "F32",
+    "unit": "fraction",
+    "group": "Engine",
+    "offset": 288
+  },
+  {
+    "name": "DistanceTraveled",
+    "type": "F32",
+    "unit": "m",
+    "group": "Session",
+    "offset": 292
+  },
+  {
+    "name": "BestLap",
+    "type": "F32",
+    "unit": "s",
+    "group": "Session",
+    "offset": 296
+  },
+  {
+    "name": "LastLap",
+    "type": "F32",
+    "unit": "s",
+    "group": "Session",
+    "offset": 300
+  },
+  {
+    "name": "CurrentLap",
+    "type": "F32",
+    "unit": "s",
+    "group": "Session",
+    "offset": 304
+  },
+  {
+    "name": "CurrentRaceTime",
+    "type": "F32",
+    "unit": "s",
+    "group": "Session",
+    "offset": 308
+  },
+  {
+    "name": "LapNumber",
+    "type": "U16",
+    "unit": "laps completed",
+    "group": "Session",
+    "offset": 312
+  },
+  {
+    "name": "RacePosition",
+    "type": "U8",
+    "unit": "position",
+    "group": "Session",
+    "offset": 314
+  },
+  {
+    "name": "Accel",
+    "type": "U8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 315
+  },
+  {
+    "name": "Brake",
+    "type": "U8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 316
+  },
+  {
+    "name": "Clutch",
+    "type": "U8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 317
+  },
+  {
+    "name": "HandBrake",
+    "type": "U8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 318
+  },
+  {
+    "name": "Gear",
+    "type": "U8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 319
+  },
+  {
+    "name": "Steer",
+    "type": "S8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 320
+  },
+  {
+    "name": "NormalizedDrivingLine",
+    "type": "S8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 321
+  },
+  {
+    "name": "NormalizedAIBrakeDifference",
+    "type": "S8",
+    "unit": "raw",
+    "group": "Inputs",
+    "offset": 322
+  }
+]

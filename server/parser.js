@@ -1,13 +1,10 @@
+const CAR_NAMES = require('../public/data/cars.json');
+const FIELD_SCHEMA = require('../public/packet-schema.json');
 /**
  * Forza UDP Telemetry Packet Parser
  * 
- * Supports:
- * - V1: 311 bytes (Forza Motorsport 7)
- * - V2: 324 bytes (Forza Horizon 4, Forza Horizon 5)
- * - V3: 331/332 bytes (Forza Motorsport 2023)
- * - Sled: 232 bytes (Basic physics/motion packet)
- * 
- * All data is streamed in Little-Endian format at up to 60Hz.
+ * FH6 324-byte packets. Little-endian decoding; raw values preserved.
+ * The listed fields occupy 323 bytes; the final byte is retained separately.
  */
 
 // Car classes mapped from official Forza PI system
@@ -27,14 +24,7 @@ const DRIVETRAIN_TYPES = {
   2: 'AWD'
 };
 
-const PACKET_TYPES = {
-  232: 'Sled (Physics Only)',
-  311: 'FM7 (Motorsport 7)',
-  323: 'FH4/FH5 (Horizon Dash Patched)',
-  324: 'FH4/FH5 (Horizon Dash Standard)',
-  331: 'FM2023 (Motorsport 2023)',
-  332: 'FM2023 (Motorsport 2023 Extended)'
-};
+const PACKET_TYPES = { 324: 'Forza Horizon 6 · 324 bytes' };
 
 /**
  * Detects packet type based on byte length
@@ -51,15 +41,18 @@ function identifyPacketType(length) {
  * @returns {Object|null} Structured telemetry object
  */
 function parseTelemetryPacket(buffer) {
-  if (!buffer || buffer.length < 232) {
+  if (!Buffer.isBuffer(buffer) || buffer.length !== 324) {
     return null;
   }
 
   const length = buffer.length;
-  const isV2 = length === 324 || length === 323; // Forza Horizon 4/5 12-byte gap
+  const isV2 = true; // FH6 inserts three 4-byte fields before PositionX.
   const isDash = length >= 311;
 
   try {
+    const readers = { S32: 'readInt32LE', U32: 'readUInt32LE', F32: 'readFloatLE', U16: 'readUInt16LE', U8: 'readUInt8', S8: 'readInt8' };
+    const raw = Object.fromEntries(FIELD_SCHEMA.map(f => [f.name, buffer[readers[f.type]](f.offset)]));
+    if (Object.values(raw).some(value => !Number.isFinite(value))) return null;
     // 1. Core State & Timing
     const isRaceOn = buffer.readInt32LE(0) === 1;
     const timestampMs = buffer.readUInt32LE(4);
@@ -122,10 +115,10 @@ function parseTelemetryPacket(buffer) {
     };
 
     const wheelInPuddleDepth = {
-      fl: buffer.readFloatLE(132),
-      fr: buffer.readFloatLE(136),
-      rl: buffer.readFloatLE(140),
-      rr: buffer.readFloatLE(144)
+      fl: buffer.readInt32LE(132),
+      fr: buffer.readInt32LE(136),
+      rl: buffer.readInt32LE(140),
+      rr: buffer.readInt32LE(144)
     };
 
     const surfaceRumble = {
@@ -172,6 +165,9 @@ function parseTelemetryPacket(buffer) {
 
     // Base telemetry container
     const telemetry = {
+      collision: { velocityLoss: raw.SmashableVelDiff, mass: raw.SmashableMass },
+      raw,
+      reservedByte: buffer[323],
       packetType: identifyPacketType(length),
       packetLength: length,
       timestamp: Date.now(),
@@ -204,7 +200,7 @@ function parseTelemetryPacket(buffer) {
         slipRatio: tireSlipRatio,
         rotationSpeed: wheelRotationSpeed,
         rumbleStrip: wheelOnRumbleStrip,
-        puddleDepth: wheelInPuddleDepth,
+        inPuddle: wheelInPuddleDepth,
         surfaceRumble,
         slipAngle: tireSlipAngle,
         combinedSlip: tireCombinedSlip
@@ -212,18 +208,21 @@ function parseTelemetryPacket(buffer) {
 
       car: {
         ordinal: carOrdinal,
-        classCode: CAR_CLASSES[carClassRaw]?.code || 'A',
-        className: CAR_CLASSES[carClassRaw]?.name || 'Class A',
+        name: CAR_NAMES[String(carOrdinal)] ?? null,
+        nameSource: CAR_NAMES[String(carOrdinal)] ? 'community-lookup' : null,
+        classCode: `CLASS ${carClassRaw}`,
+        className: `Class ${carClassRaw}`,
         classColor: CAR_CLASSES[carClassRaw]?.color || '#ff2d55',
         pi: carPerformanceIndex,
-        drivetrain: DRIVETRAIN_TYPES[drivetrainTypeRaw] || 'AWD',
-        numCylinders
+        drivetrain: DRIVETRAIN_TYPES[drivetrainTypeRaw] || `Unknown (${drivetrainTypeRaw})`,
+        numCylinders,
+        group: raw.CarGroup
       }
     };
 
     // If packet has DASH extension (speed, power, inputs, temps, laps)
     if (isDash) {
-      // Horizon has a 12-byte gap between offset 231 and 244
+      // FH6 CarGroup, SmashableVelDiff and SmashableMass occupy bytes 232–243.
       const dashOffset = isV2 ? 244 : 232;
 
       // Global coordinates
@@ -245,21 +244,6 @@ function parseTelemetryPacket(buffer) {
       const powerHp = powerWatts / 745.7;
       const powerKw = powerWatts / 1000;
       const torqueFtLb = torqueNm * 0.737562;
-
-      // Tire Temperatures (Fahrenheit from game)
-      const tireTempF = {
-        fl: buffer.readFloatLE(dashOffset + 24),
-        fr: buffer.readFloatLE(dashOffset + 28),
-        rl: buffer.readFloatLE(dashOffset + 32),
-        rr: buffer.readFloatLE(dashOffset + 36)
-      };
-
-      const tireTempC = {
-        fl: (tireTempF.fl - 32) * (5 / 9),
-        fr: (tireTempF.fr - 32) * (5 / 9),
-        rl: (tireTempF.rl - 32) * (5 / 9),
-        rr: (tireTempF.rr - 32) * (5 / 9)
-      };
 
       // Boost, Fuel & Distance
       const boostPsi = buffer.readFloatLE(dashOffset + 40);
@@ -303,23 +287,18 @@ function parseTelemetryPacket(buffer) {
         fuelPercent: Math.round(fuelFraction * 100)
       };
 
-      telemetry.wheels.temperatures = {
-        fahrenheit: tireTempF,
-        celsius: {
-          fl: Math.round(tireTempC.fl),
-          fr: Math.round(tireTempC.fr),
-          rl: Math.round(tireTempC.rl),
-          rr: Math.round(tireTempC.rr)
-        }
-      };
+      telemetry.wheels.temperatures = { raw: {
+        fl: raw.TireTempFrontLeft, fr: raw.TireTempFrontRight,
+        rl: raw.TireTempRearLeft, rr: raw.TireTempRearRight
+      }};
 
       telemetry.inputs = {
         throttlePercent: Math.round((accel / 255) * 100),
         brakePercent: Math.round((brake / 255) * 100),
         clutchPercent: Math.round((clutch / 255) * 100),
         handbrakeActive: handbrake > 0,
+        handbrakePercent: handbrake / 255 * 100,
         steeringPercent: Math.round((steer / 127) * 100),
-        steeringDeg: Math.round((steer / 127) * 450), // typical 900-degree lock-to-lock rotation
         gear: formatGear(gear)
       };
 
@@ -355,8 +334,6 @@ function parseTelemetryPacket(buffer) {
  * @returns {string}
  */
 function formatGear(g) {
-  if (g === 0) return 'R';
-  if (g === 11) return 'N';
   return String(g);
 }
 
@@ -374,6 +351,7 @@ function formatLapTime(sec) {
 }
 
 module.exports = {
+  FIELD_SCHEMA,
   parseTelemetryPacket,
   identifyPacketType,
   CAR_CLASSES,

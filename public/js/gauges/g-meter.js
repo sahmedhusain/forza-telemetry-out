@@ -28,6 +28,7 @@ class GMeterGauge {
   setupHiDPI() {
     if (!this.canvas) return;
     const rect = this.canvas.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
     const dpr = window.devicePixelRatio || 1;
     this.canvas.width = rect.width * dpr;
     this.canvas.height = rect.height * dpr;
@@ -40,17 +41,19 @@ class GMeterGauge {
     if (!gForce) return;
     const targetLat = gForce.lateral || 0;
     const targetLong = gForce.longitudinal || 0;
-    this.vertG = gForce.vertical || 1;
+    this.vertG = gForce.vertical ?? 0;
 
     // Smooth movement
-    this.latG += (targetLat - this.latG) * 0.4;
-    this.longG += (targetLong - this.longG) * 0.4;
+    const reduced = document.body.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.latG += (targetLat - this.latG) * (reduced ? 1 : .4);
+    this.longG += (targetLong - this.longG) * (reduced ? 1 : .4);
 
     // Track peak G
     if (Math.abs(this.latG) > this.peakLat) this.peakLat = Math.abs(this.latG);
     if (Math.abs(this.longG) > this.peakLong) this.peakLong = Math.abs(this.longG);
 
     // Add to history trail
+    if (reduced) this.trail = [];
     this.trail.push({ x: this.latG, y: this.longG, time: Date.now() });
     if (this.trail.length > this.maxTrail) {
       this.trail.shift();
@@ -61,8 +64,9 @@ class GMeterGauge {
 
   render() {
     const ctx = this.ctx;
-    if (!ctx) return;
+    if (!ctx || !this.width || !this.height || !this.canvas.getClientRects().length) return;
 
+    const colors=chartColors();
     const w = this.width;
     const h = this.height;
     ctx.clearRect(0, 0, w, h);
@@ -70,25 +74,25 @@ class GMeterGauge {
     const centerX = w / 2;
     const centerY = h / 2;
     const maxRadius = Math.min(centerX, centerY) - 18;
-    const maxG = 1.8; // Scale max radius to 1.8G
+    const maxG = this.maxG || 2; // Scale max radius to 1.8G
 
     // 1. Draw Concentric G Rings (0.5G, 1.0G, 1.5G)
-    const rings = [0.5, 1.0, 1.5];
+    const rings = [maxG/4,maxG/2,maxG*3/4];
     ctx.lineWidth = 1;
 
     rings.forEach((g) => {
       const r = (g / maxG) * maxRadius;
       ctx.beginPath();
       ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
-      ctx.strokeStyle = g === 1.0 ? 'rgba(0, 240, 255, 0.35)' : 'rgba(56, 68, 92, 0.4)';
+      ctx.strokeStyle = colors.grid;
       ctx.setLineDash(g === 1.0 ? [4, 4] : []);
       ctx.stroke();
 
       // Ring label
-      ctx.fillStyle = '#65748c';
+      ctx.fillStyle = colors.text;
       ctx.font = '9px monospace';
       ctx.textAlign = 'left';
-      ctx.fillText(`${g}G`, centerX + r + 3, centerY - 2);
+      ctx.fillText(`${Number(g.toFixed(2))}G`, centerX + r * .71 + 2, centerY - r * .71 - 2);
     });
 
     ctx.setLineDash([]);
@@ -99,14 +103,14 @@ class GMeterGauge {
     ctx.lineTo(centerX + maxRadius, centerY);
     ctx.moveTo(centerX, centerY - maxRadius);
     ctx.lineTo(centerX, centerY + maxRadius);
-    ctx.strokeStyle = 'rgba(56, 68, 92, 0.5)';
+    ctx.strokeStyle = colors.grid;
     ctx.stroke();
 
-    ctx.fillStyle = '#5c6c82';
+    ctx.fillStyle = colors.text;
     ctx.font = 'bold 9px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('BRAKE', centerX, centerY - maxRadius + 12);
-    ctx.fillText('ACCEL', centerX, centerY + maxRadius - 6);
+    ctx.fillText(translateText('THROTTLE'), centerX, centerY - maxRadius + 12);
+    ctx.fillText(translateText('BRAKE'), centerX, centerY + maxRadius - 6);
     ctx.fillText('L', centerX - maxRadius + 10, centerY - 4);
     ctx.fillText('R', centerX + maxRadius - 10, centerY - 4);
 
@@ -131,8 +135,8 @@ class GMeterGauge {
     ctx.save();
     ctx.beginPath();
     ctx.arc(ballX, ballY, 7, 0, Math.PI * 2);
-    ctx.fillStyle = '#00f0ff';
-    ctx.shadowColor = '#00f0ff';
+    ctx.fillStyle = colors.cyan;
+    ctx.shadowColor = colors.cyan;
     ctx.shadowBlur = 12;
     ctx.fill();
 

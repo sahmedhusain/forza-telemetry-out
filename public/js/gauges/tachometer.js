@@ -21,6 +21,7 @@ class TachometerGauge {
   setupHiDPI() {
     if (!this.canvas) return;
     const rect = this.canvas.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
     const dpr = window.devicePixelRatio || 1;
     this.canvas.width = rect.width * dpr;
     this.canvas.height = rect.height * dpr;
@@ -32,12 +33,19 @@ class TachometerGauge {
   update(engineData) {
     if (!engineData) return;
     this.targetRpm = engineData.currentRpm || 0;
-    this.maxRpm = engineData.maxRpm || 9000;
-    this.idleRpm = engineData.idleRpm || 900;
+    this.maxRpm = engineData.maxRpm;
+    this.idleRpm = engineData.idleRpm ?? 0;
     this.isRevLimit = engineData.isRevLimit || false;
 
+    if (!Number.isFinite(this.maxRpm) || this.maxRpm <= 0) {
+      this.currentRpm = 0;
+      this.ctx.clearRect(0, 0, this.width || 0, this.height || 0);
+      this.updateShiftLights();
+      return;
+    }
+
     // Smooth lerp interpolation for needle/arc
-    this.currentRpm += (this.targetRpm - this.currentRpm) * 0.35;
+    this.currentRpm += (this.targetRpm - this.currentRpm) * ((document.body.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches) ? 1 : .35);
 
     this.render();
     this.updateShiftLights();
@@ -62,7 +70,7 @@ class TachometerGauge {
 
   render() {
     const ctx = this.ctx;
-    if (!ctx) return;
+    if (!ctx || !this.width || !this.height || !this.canvas.getClientRects().length) return;
 
     const w = this.width;
     const h = this.height;
@@ -70,7 +78,7 @@ class TachometerGauge {
 
     const centerX = w / 2;
     const centerY = h / 2 + 10;
-    const radius = Math.min(centerX, centerY) - 22;
+    const radius = Math.min(centerX - 22, centerY - 16);
 
     const startAngle = Math.PI * 0.75; // 135 deg
     const endAngle = Math.PI * 2.25;   // 405 deg (270 deg sweep)
@@ -79,7 +87,7 @@ class TachometerGauge {
     // 1. Draw Background Track Arc
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-    ctx.strokeStyle = '#181e2b';
+    ctx.strokeStyle = '#d4d3cc';
     ctx.lineWidth = 14;
     ctx.lineCap = 'round';
     ctx.stroke();
@@ -118,11 +126,11 @@ class TachometerGauge {
       const textR = radius - 28;
       const tx = centerX + Math.cos(angle) * textR;
       const ty = centerY + Math.sin(angle) * textR;
-      ctx.fillStyle = frac >= 0.85 ? '#ff0055' : '#73839c';
+      ctx.fillStyle = frac >= 0.85 ? '#ff0055' : '#52565c';
       ctx.font = 'bold 11px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(i.toString(), tx, ty);
+      ctx.fillText((this.maxRpm * frac / 1000).toFixed(1), tx, ty);
     }
 
     // 4. Draw Active RPM Sweeping Arc
@@ -132,8 +140,8 @@ class TachometerGauge {
 
       // Create colorful racing gradient
       const gradient = ctx.createConicGradient(startAngle, centerX, centerY);
-      gradient.addColorStop(0, '#00f0ff');       // Cyan idle/low
-      gradient.addColorStop(0.55, '#d4ff00');    // Neon Lime mid
+      gradient.addColorStop(0, '#657b23');       // Cyan idle/low
+      gradient.addColorStop(0.55, '#7b922d');    // Neon Lime mid
       gradient.addColorStop(0.80, '#ff9500');    // Apex Amber high
       gradient.addColorStop(0.95, '#ff0055');    // Hot Pink redline
 

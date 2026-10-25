@@ -10,11 +10,13 @@ const { parseTelemetryPacket, identifyPacketType } = require('./parser');
 
 class ForzaUdpListener {
   constructor(options = {}) {
-    this.port = parseInt(options.port || process.env.FORZA_PORT || 5300, 10);
+    this.port = parseInt(options.port || process.env.FORZA_PORT || 5500, 10);
     this.host = options.host || process.env.FORZA_HOST || '0.0.0.0';
     this.onTelemetry = options.onTelemetry || (() => {});
     this.onStatusChange = options.onStatusChange || (() => {});
 
+    this.error = null;
+    this.invalidPackets = 0;
     this.socket = null;
     this.isListening = false;
     this.packetsReceived = 0;
@@ -33,11 +35,12 @@ class ForzaUdpListener {
     if (this.isListening) return;
 
     try {
-      this.socket = dgram.createSocket({ type: 'udp4', reuseAddr: true });
+      this.socket = dgram.createSocket({ type: 'udp4', reuseAddr: false });
 
       this.socket.on('error', (err) => {
         console.error(`[UDP Listener] Error on ${this.host}:${this.port}:`, err.message);
         this.isListening = false;
+        this.error = err.message;
         this.onStatusChange({
           status: 'error',
           error: err.message,
@@ -69,16 +72,14 @@ class ForzaUdpListener {
       });
 
       this.socket.on('message', (msg, rinfo) => {
+        const telemetry = parseTelemetryPacket(msg);
+        if (!telemetry) { this.invalidPackets++; return; }
         this.packetsReceived++;
         this.secondPackets++;
         this.bytesReceived += msg.length;
         this.lastPacketTime = Date.now();
         this.lastPacketLength = msg.length;
-
-        const packetTitle = identifyPacketType(msg.length);
-        this.detectedGame = packetTitle;
-
-        const telemetry = parseTelemetryPacket(msg);
+        this.detectedGame = identifyPacketType(msg.length);
         if (telemetry) {
           telemetry.senderIp = rinfo.address;
           telemetry.senderPort = rinfo.port;
@@ -112,6 +113,8 @@ class ForzaUdpListener {
 
   getStatus() {
     return {
+      error: this.error,
+      invalidPackets: this.invalidPackets,
       isListening: this.isListening,
       port: this.port,
       host: this.host,

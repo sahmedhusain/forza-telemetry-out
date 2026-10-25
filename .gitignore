@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
-package-lock.json
 
-# Environment variables (keep template committed, local env ignored if preferred, or keep both)
+# Local configuration
+.env
 .env.local
 
 # OS Generated
@@ -17,3 +17,6 @@ recordings/
 dist/
 build/
 out/
+
+# Local cumulative telemetry summaries
+/data/

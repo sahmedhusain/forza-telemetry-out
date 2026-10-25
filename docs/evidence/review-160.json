@@ -1,0 +1,71 @@
+{
+  "contract": "../DESIGN.md v1.6 overview contract; shared original instruments, 26 widgets, validated local layout, original racing branding and data-driven/reduced motion.",
+  "targetViewports": [
+    "390x844",
+    "844x390",
+    "768x1024",
+    "1440x900",
+    "1920x1080"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Native labeled width/height selectors, touch/keyboard up/down buttons, focusable grid and overflow bodies. Grid DOM order matches layout order; no duplicate IDs across all 26 widgets. RTL controls and label restoration inspected. Full screen-reader QA remains unperformed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Drive/Engineering/All tested at five sizes with extra-large values: no horizontal document/grid/widget-shell overflow. Phones stack at full width and preserve saved desktop dimensions. Final engineering first row checked at 1440 after balancing its widths."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Dashboard mounts original nodes before gauges/schema initialization; 88 raw rows populate and all IDs remain connected."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "No packets show waiting/em dashes. Explicit empty layout releases every borrowed node, shows Add/Reset recovery and was restored using Add widget."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Forced isolated storage write failure showed the temporary-layout message while instruments remained usable. Layout tests reject invalid/oversized/unknown input."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "Populated isolated fixture exercises numeric/vehicle/tire rendering; missing live history remains unavailable. Fixture clearly labeled, receiver receives no synthetic packets, and fixture cleared by reload."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "29 tests pass. GUI move/resize persisted 8-column/480px Engine across reload. Native DataTransfer drag handlers moved car ahead of engine. All widgets preserved original canvas identity; returning to Chassis restored two front/two rear cards."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "Widget layout, branding and motion use local DOM/localStorage only; no new browser/system permissions or network exposure."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "390x844",
+      "artifact": "overview-phone-edit-v160.png",
+      "observation": "Arabic light edit controls: touch reorder, add/hide and numeric sizing."
+    },
+    {
+      "viewport": "844x390",
+      "artifact": "overview-landscape-v160.png",
+      "observation": "Landscape overview with compact navigation and internal hidden-track scrolling."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "overview-tablet-v160.png",
+      "observation": "French light tablet layout with two-column widgets and visible main navigation."
+    },
+    {
+      "viewport": "1440x900",
+      "artifact": "overview-desktop-v160.png",
+      "observation": "Default Drive layout, original branding, real waiting state and no synthetic data."
+    },
+    {
+      "viewport": "1920x1080",
+      "artifact": "overview-wide-v160.png",
+      "observation": "Wide dashboard with subsystem accents and multiple live-data modules in one page."
+    }
+  ]
+}

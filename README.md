@@ -1,329 +1,243 @@
-<div align="center">
+<p align="center"><img src="docs/assets/brand.svg" width="600" alt="Forza Telemetry Out — independent Horizon 6 companion"></p>
 
-  <img src="public/assets/logos/forza-telemetry-logo.svg" alt="Forza Telemetry Out Logo" width="620">
+# Forza Telemetry Out
 
-  <br><br>
+An independent **Forza Horizon 6** telemetry cockpit for your desktop and browser. See what the car is doing: inputs, engine output, grip, suspension, acceleration, motion and race timing. Inspect and export **all 88 documented fields** from the game's 324-byte UDP packet.
 
-  <p align="center">
-    <strong>Ultra-Responsive 60Hz Telemetry HUD, Real-Time Physics Analytics & Sim Racing Dashboard</strong>
-    <br>
-    <em>Engineered for Forza Horizon 5, Forza Horizon 4, Forza Motorsport (2023), and Forza Motorsport 7</em>
-  </p>
+[Getting started](GETTING_STARTED.md) · [Documentation](docs/README.md) · [Every packet field](docs/PROTOCOL.md) · [Analytics](docs/ANALYTICS.md) · [Changelog](CHANGELOG.md) · [Build & release](docs/RELEASING.md) · [MIT license](LICENSE)
 
-  <p align="center">
-    <a href="https://github.com/sahmedhusain/forza-telemetry-out/releases"><img src="https://img.shields.io/badge/version-1.0.0-ff0055.svg?style=for-the-badge&logo=git&logoColor=white" alt="Version 1.0.0"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-00f0ff.svg?style=for-the-badge&logo=open-source-initiative&logoColor=white" alt="License MIT"></a>
-    <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-v18%2B-d4ff00.svg?style=for-the-badge&logo=node.js&logoColor=black" alt="Node.js"></a>
-    <a href="https://www.electronjs.org/"><img src="https://img.shields.io/badge/Electron-v45-2b2e3a.svg?style=for-the-badge&logo=electron&logoColor=9feaf9" alt="Electron"></a>
-    <a href="https://github.com/sahmedhusain/forza-telemetry-out/stargazers"><img src="https://img.shields.io/github/stars/sahmedhusain/forza-telemetry-out?style=for-the-badge&color=ffea00&logo=star" alt="Stars"></a>
-    <a href="https://github.com/sahmedhusain/forza-telemetry-out/pulls"><img src="https://img.shields.io/badge/PRs-welcome-00ff88.svg?style=for-the-badge" alt="PRs Welcome"></a>
-  </p>
+![Version](https://img.shields.io/badge/version-1.6.0-ff376c)
+![License](https://img.shields.io/badge/license-MIT-d9fc78)
+![Runtime](https://img.shields.io/badge/Node.js-22%2B-6cdde4)
+[![CI](https://github.com/sahmedhusain/forza-telemetry-out/actions/workflows/ci.yml/badge.svg)](https://github.com/sahmedhusain/forza-telemetry-out/actions/workflows/ci.yml)
 
-  <p align="center">
-    <img src="public/assets/logos/forza-horizon-badge.svg" height="34" alt="Forza Horizon Badge">
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="public/assets/logos/forza-motorsport-badge.svg" height="34" alt="Forza Motorsport Badge">
-  </p>
+**Desktop + web · 26 widgets · 88 raw fields · 4 interface languages · dark/light themes · CSV/JSON exports**
 
-  <p align="center">
-    <a href="#-key-features">Key Features</a> •
-    <a href="#-live-telemetry-architecture">Architecture</a> •
-    <a href="#-quick-start">Quick Start</a> •
-    <a href="#-all-84-telemetry-data-points">Packet Specification</a> •
-    <a href="#-in-game-setup-guide">In-Game Setup</a> •
-    <a href="#-releases--versioning">Releases</a>
-  </p>
+![Version 1.6 dashboard, widget editing, presets and four language settings](docs/assets/configuration.gif)
 
-</div>
+The animation shows the current app waiting for a game connection. [Static dashboard PNG](docs/assets/dashboard.png) · [Screenshot gallery](#screenshots). No generated driving data is shown.
 
----
+> Fan-made companion, not an official Forza product. Forza, Horizon, Xbox and related names belong to their respective owners. The application mark and animation are original companion artwork; no official endorsement is implied.
 
-## ⚡ Tech Stack
+## Start in two minutes
 
-<div align="center">
+Install [Node.js](https://nodejs.org/) 22 or later, then:
 
-| Component | Technology | Description |
-| :--- | :--- | :--- |
-| **Desktop Framework** | <img src="https://skillicons.dev/icons?i=electron" width="22" valign="middle"/> **Electron** | Native cross-platform desktop application with hardware acceleration |
-| **Backend Engine** | <img src="https://skillicons.dev/icons?i=nodejs" width="22" valign="middle"/> **Node.js** | Native Little-Endian UDP socket server & HTTP daemon |
-| **Real-Time Feed** | <img src="https://img.shields.io/badge/WebSockets-RFC6455-00f0ff?style=flat-square" valign="middle"/> **WebSocket (ws)** | Zero-latency 60 FPS binary-to-JSON broadcast engine |
-| **HUD & Visuals** | <img src="https://skillicons.dev/icons?i=html,css,js" width="60" valign="middle"/> **HTML5 / CSS3 / ES6** | Custom Forza Horizon neon & Motorsport titanium design system |
-| **Rendering Gauges** | <img src="https://img.shields.io/badge/Canvas-Hardware--Accelerated-ff0055?style=flat-square" valign="middle"/> **HTML5 Canvas 2D** | High-DPI 60 FPS sweeping tachometer, G-meter & timeline charts |
-| **Audio Synthesis** | <img src="https://img.shields.io/badge/Web%20Audio%20API-Synthesizer-d4ff00?style=flat-square" valign="middle"/> **Web Audio** | Algorithmic motorsport redline shift-point warning buzzer |
+```sh
+git clone https://github.com/sahmedhusain/forza-telemetry-out.git
+cd forza-telemetry-out
+npm ci
+```
 
-</div>
+Create your local `.env` from [.env.example](.env.example) ([Windows/macOS/Linux commands](GETTING_STARTED.md#install-from-source)). Keep local configuration out of commits. Start **one** receiver:
 
----
+```sh
+npm start          # browser dashboard and receiver
+npm run electron  # desktop app with the receiver built in
+```
 
-## 🏁 Key Features
+For the browser, open **http://127.0.0.1:3050**. The dashboard waits for real driving packets; there is no demo or audio feature.
 
-### 🏎️ 1. Authentic Forza DNA Visual Design
-- **Apex Tachometer & Speedometer HUD**: Sweeping 270-degree high-DPI Canvas tachometer with responsive redline glow, digital numeric readout, and massive gear display (`R`, `N`, `1`..`10`).
-- **F1 / GT3 Shift Light Array**: Progressive 10-LED shift light bar (Green ➔ Yellow ➔ Red ➔ Flashing Violet Redline Strobe).
-- **Audio Shift Rev Warning**: Built-in synthesized Web Audio tone alerts you the exact millisecond to pull the paddle shifter.
-- **Forza Class & PI Badge**: Automatic detection of car classification (`D`, `C`, `B`, `A`, `S1`, `S2`, `X`) with official Forza color coding and Performance Index (`100`–`999`).
+In FH6, go to **Settings → HUD and Gameplay**, turn **Data Out On**, set the destination IP to this computer's IPv4 address and the port to **5500**. On the same gaming PC use `127.0.0.1`; from Xbox or another PC use the receiver's LAN IP. Allow inbound UDP 5500 on the receiver, then drive. Ports **5200–5300 must be avoided**.
 
-### 🛞 2. 4-Wheel Chassis & Tire Telemetry Matrix
-- **Real-Time Tire Heatmap**: Dynamic temperature monitoring on all 4 wheels (`FL`, `FR`, `RL`, `RR`) with color progression:
-  - 🔵 **Cold** (< 65°C / < 150°F)
-  - 🟢 **Optimal Grip** (65°C – 105°C / 150°F – 220°F)
-  - 🟡 **Warm** (106°C – 125°C / 221°F – 257°F)
-  - 🔴 **Overheating / Degrading** (> 125°C / > 257°F)
-- **Suspension Travel Dampers**: Active spring compression meters and suspension travel measurement in millimeters.
-- **Tire Slip Ratio & Angle**: Real-time grip loss warning borders that light up when tires exceed traction limits.
-- **Rumble Strip & Puddle Detection**: Live indicators for apex curb vibration and surface puddle depth.
+The game sends only while actively driving. Menus, pauses, replays, rewinds and finished races stop the stream. The dashboard marks held values after two seconds without a frame. [Official setup and packet documentation](https://support.forza.net/hc/en-us/articles/51744149102611-Forza-Horizon-6-Data-Out-Documentation).
 
-### 🌐 3. G-Force Friction Circle (Accelerometer)
-- **Friction Ellipse / Circle**: Visualizes combined lateral (cornering) and longitudinal (acceleration/braking) G-forces.
-- **Inertia Trail**: Real-time fading trail traces vehicle weight transfer throughout braking zones, apexes, and exits.
-- **Numeric G-Readouts**: High-precision readouts for Lateral G, Longitudinal G, and Vertical G with peak hold.
+## Your customizable dashboard
 
-### 🕹️ 4. Driver Inputs & Steering Wheel
-- **Pedal Ladder Bars**: Vertical LED indicators for Throttle (0-100%), Brake (0-100%), Clutch (0-100%), and Handbrake.
-- **Rotating Steering Wheel**: Graphic steering wheel that rotates up to 900° lock-to-lock matching your direct physical input with live degree readout.
+Dashboard is the default home page. It offers **26 widgets**, including engine/speed, powertrain, inputs, car/tire state, G-force, charts, current timing, laps, vehicle metadata, session analytics, all 88 raw channels, historical records, recording controls and connection health. Existing detail tabs remain available.
 
-### ⚙️ 5. Powertrain Dyno & Performance Analytics
-- **Live Horsepower & Torque**: Instantaneous power (HP / kW) and engine torque (Nm / lb-ft).
-- **Turbo Boost Gauge**: Precise boost pressure reading (PSI / Bar) with vacuum/boost transition.
-- **Automated 0-100 km/h (0-60 mph) Sprint Timer**: Automatically starts when launching from a stop and captures your best 0-100 sprint time.
+1. Choose **Drive**, **Engineering** or **All widgets** as a starting layout.
+2. Click **Edit widgets**. Drag the grip to reorder on desktop, or use **↑ / ↓** on touchscreens and keyboards.
+3. Choose **Width** (columns out of 12) and **Height** for each widget. Phones stack widgets at full width and retain the saved desktop widths.
+4. Use **×** to hide a widget, or choose one in the widget picker and click **Add widget**.
+5. Click **Done editing**. Layout changes save automatically on this browser/device. **Reset layout** restores Drive; telemetry/history/recordings are preserved.
 
-### ⏱️ 6. Lap Timing & Session Telemetry
-- Current Lap Time, Last Lap Time, Best Lap Time (highlighted in purple), Lap Counter, and Race Position (`P1`).
-- Total track distance accumulated during the session.
+The overview scrolls internally with hidden tracks. Focus the widget grid and use Page Up/Down, or use wheel/touch gestures. The current widget selection, order and dimensions use `forza.dashboard.v1` in localStorage; storage failures are shown and the layout remains usable for the session. Each browser/device has its own layout.
 
-### 📈 7. Real-Time Timeline Graph
-- 60 FPS scrolling multi-channel telemetry chart displaying Speed (Cyan), Throttle (Green), Brake (Red), and Boost (Purple).
+The refreshed companion identity uses an original animated slash mark, numbered panels and colored subsystem accents. Layout changes animate; tire tread motion follows each reported angular velocity and stops with stale/inactive data. Reduced-motion settings disable decorative/tread motion. These remain illustrations, with raw numbers available alongside them.
 
-### 🕹️ 8. Built-in Realistic Physics Simulator ("Demo Drive")
-- Don't have Forza running right now? Click **▶ DEMO DRIVE** to activate the hyper-realistic **Porsche 911 GT3 RS** telemetry generator! Simulates full acceleration through gears 1–6, threshold braking with nose-dive weight transfer, trail braking into high-G corners, curb clipping, and tire heating.
+## Tabs, customization and connection
 
-### 📱 9. Dual-Mode Deployment (Desktop + Secondary Screens)
-- **Electron Mode**: Native desktop window with borderless titlebar, custom shortcuts, and F11 fullscreen.
-- **Web Mode**: Accessible from any iPad, iPhone, Android tablet, or laptop on your LAN (`http://<PC_IP>:3050`), making it the ultimate secondary screen for your sim racing rig.
+Choose Dashboard, Cockpit, Chassis, Analysis, Session, Channels, Connect or Settings, then a smaller screen inside that view. Cockpit separates instruments, inputs, motion and vehicle metadata; Chassis separates the car and each axle. Connection, settings and session tools are split too. Phones use labeled View/Screen selectors. Scroll gestures and keyboard scrolling still work; scrollbar tracks stay hidden.
 
-### 💾 10. Telemetry Session Recorder & Exporters
-- Log session telemetry into memory and export to **CSV** (for Excel, MoTeC, or Python data science) or **JSON** with one click.
+Settings persist per device: language, dark/light/system theme, number size, units, accent, density, instrument style, motion, G-scale, history window, visual shift threshold and tire colors. Connect shows detected receiver IPs, active UDP/TCP ports and packet health; apply a new UDP port without restarting, then download .env to preserve it. Read the [analytics guide](docs/ANALYTICS.md) for formulas and limitations.
 
----
+### Inspect related signals
 
-## 🏗️ Live Telemetry Architecture
+In **Analysis → Compare channels**, choose any two of the 88 raw fields. Cyan/solid and amber/dashed traces have explicitly independent axes. Tap the graph or move **Inspect sample** to hold the current window and inspect the same measured instant in both channels. Large values are rounded; **Exact raw** preserves the full numeric value. **Resume live** releases the snapshot. Reception, recording and other instruments continue while a channel window is held. Browser review remains bounded to 120 seconds / 1,200 samples; it is separate from saved per-car extrema.
+
+Use the header **Focus screen** control to expand the selected screen. The source state and exit button remain visible. Press **Escape** or **Exit focus** to restore navigation. [Research and considered next steps](docs/RESEARCH.md) distinguish implemented features from future work.
+
+### Languages, appearance and readability
+
+Open **Settings → Language and theme** to choose a language:
+
+| Language | Code | Layout | Current screenshot |
+|---|---|---|---|
+| 🇬🇧 English | `en` | Left to right | [Dark](docs/assets/settings-en-dark.png) |
+| 🇸🇦 العربية — Arabic | `ar` | Right to left | [Light / RTL](docs/assets/settings-ar-light.png) |
+| 🇪🇸 Español — Spanish | `es` | Left to right | [Light](docs/assets/settings-es-light.png) |
+| 🇫🇷 Français — French | `fr` | Left to right | [Dark](docs/assets/settings-fr-dark.png) |
+
+Arabic mirrors navigation and reading order; physical car corners and plot axes retain their physical orientation. Language changes do not rename raw packet fields or change exported data. These are interface translations; repository documentation is in English.
+
+Choose **Dark**, **Light** or **System**, and **Standard**, **Large** or **Extra large** numbers. Preferences persist on this device. Charts change their grid, label and line colors with the theme. Source documentation and low-level network error details remain in their original language.
+
+### Added measured analysis
+
+The per-tire slip plane plots normalized slip angle against slip ratio. Session shows mean lap time, population standard deviation after at least two observed laps, peak longitudinal braking G while the brake is applied, and time-weighted RMS suspension velocity/end-of-travel occupancy. Read the [formulas, eligibility and unavailable calculations](docs/ANALYTICS.md).
+
+## A cockpit, with the data behind it
+
+| Surface | What you see |
+|---|---|
+| Engine / speed | RPM arc scaled to reported engine maximum, shift lights, gear, km/h or mph |
+| Driver inputs | Throttle, brake, clutch, full analog handbrake and signed steering percentage |
+| Contact patch | All four tire temperatures (raw), suspension compression, slip ratio, rumble contact |
+| Powertrain | kW or hp, torque in N·m, boost in psi, fuel percentage |
+| Traction circle | Lateral, longitudinal and vertical G derived from local acceleration |
+| Trace | Selectable 10/20/60/120-second window of speed, throttle, brake and boost; normalized scales stated in legend |
+| Race / session | Current, best and last lap, elapsed race time, completed laps, position, total distance |
+| Body / world | World position, local velocity, orientation, angular velocity, collision loss and object mass |
+| All channels | All 88 original fields, byte offsets, units and types; search, group filter and freeze |
+| Recording | In-memory capture with complete CSV and JSON downloads |
+
+The raw explorer also exposes wheel rotation, suspension travel in meters, slip angles, combined slip, puddle flags, surface rumble, car group, engine idle RPM, driving line and AI braking difference. Nothing in the documented packet is discarded. The unspecified last byte is retained separately.
+
+No tire-wear or track-ID values are invented: they are absent from this format. Tire temperature units, detailed class names and special gear meanings are not defined by the supplied FH6 document, so these remain raw. See [protocol notes and all offsets](docs/PROTOCOL.md).
+
+## Screenshots
+
+All images below were captured from **1.6.0**. Instruments show the real waiting state until FH6 sends packets. Click an image to open the full PNG; the [complete image index](docs/README.md#current-images) includes all four language settings.
+
+| Drive dashboard · dark | Drive dashboard · light |
+|---|---|
+| [![Dark dashboard](docs/assets/dashboard.png)](docs/assets/dashboard.png) | [![Light dashboard](docs/assets/dashboard-light.png)](docs/assets/dashboard-light.png) |
+
+| Edit widget layout | Engineering preset |
+|---|---|
+| [![Widget size and reorder controls](docs/assets/dashboard-edit.png)](docs/assets/dashboard-edit.png) | [![Engineering dashboard](docs/assets/dashboard-engineering.png)](docs/assets/dashboard-engineering.png) |
+
+| Arabic · light / RTL | French · dark |
+|---|---|
+| [![Arabic light settings](docs/assets/settings-ar-light.png)](docs/assets/settings-ar-light.png) | [![French dark settings](docs/assets/settings-fr-dark.png)](docs/assets/settings-fr-dark.png) |
+
+<p align="center"><a href="docs/assets/dashboard-phone-ar.png"><img src="docs/assets/dashboard-phone-ar.png" width="260" alt="Arabic light dashboard at a 390 by 844 phone viewport"></a></p>
+
+## Desktop and web: one application
 
 ```mermaid
 flowchart LR
-    subgraph Game ["🎮 Forza Racing Title"]
-        FH["Forza Horizon 4 / 5"]
-        FM["Forza Motorsport 7 / 2023"]
-    end
-
-    subgraph Server ["⚡ Backend Engine (Node.js / Electron)"]
-        UDP["UDP Socket Listener (Port 5300)"]
-        PARSER["Binary Packet Parser (Little-Endian)"]
-        PHYSICS["Derived Kinematics & G-Force Engine"]
-        SIM["Realistic Porsche 911 Physics Simulator"]
-        REC["Session Recorder & CSV/JSON Exporter"]
-        WS["WebSocket Server (ws @ 60 FPS)"]
-        HTTP["HTTP Static File Server"]
-    end
-
-    subgraph Client ["🏁 Frontend Telemetry HUD"]
-        ELECTRON["Native Electron Window"]
-        WEB["Browser HUD (PC / Mac / Linux)"]
-        MOBILE["iPad / Phone / Sim Rig Mount"]
-    end
-
-    FH -->|UDP 324 Bytes| UDP
-    FM -->|UDP 311 / 331 Bytes| UDP
-    UDP --> PARSER
-    PARSER --> PHYSICS
-    SIM -.->|Toggle Demo| PHYSICS
-    PHYSICS --> REC
-    PHYSICS --> WS
-    WS --> ELECTRON
-    WS --> WEB
-    WS --> MOBILE
-    HTTP --> WEB
-    HTTP --> MOBILE
+  Game[Forza Horizon 6] -->|UDP 5500| Receiver[Node.js receiver]
+  Receiver --> Parser[324-byte validation + decoder]
+  Parser --> Recorder[Bounded in-memory recording]
+  Parser -->|WebSocket| Web[Browser cockpit]
+  Parser -->|WebSocket| Desktop[Electron cockpit]
+  Recorder --> Export[CSV / JSON download]
 ```
 
----
+A browser cannot receive UDP directly. The Node process or Electron app must run on the receiving computer. Both serve the same local web assets, with no cloud account and no runtime CDN dependencies. The game receives no commands from this application.
 
-## 🚀 Quick Start
+To view from a phone or tablet, set `WEB_HOST=0.0.0.0`, restart, and open `http://RECEIVER_LAN_IP:3050` on the same private network. This gives other devices on that network access to telemetry, exports and recording controls; there are no user accounts. Do not forward these ports to the internet.
 
-### 1. Installation
-```bash
-# Clone the repository
-git clone https://github.com/sahmedhusain/forza-telemetry-out.git
-cd forza-telemetry-out
+## Technology
 
-# Install dependencies
-npm install
+| | Stack | Role |
+|---|---|---|
+| <img src="https://cdn.simpleicons.org/electron/9FEAF9" width="24" alt="Electron icon"> | Electron | Sandboxed desktop window; context-isolated preload |
+| <img src="https://cdn.simpleicons.org/nodedotjs/5FA04E" width="24" alt="Node.js icon"> | Node.js | Native UDP, HTTP, binary decoding and test runner |
+| <img src="https://cdn.simpleicons.org/javascript/F7DF1E" width="24" alt="JavaScript icon"> | JavaScript | Shared data flow, analytics and browser controls |
+| <img src="https://cdn.simpleicons.org/html5/E34F26" width="24" alt="HTML icon"> | HTML / Canvas | Semantic UI and custom instrument drawing |
+| <img src="https://cdn.simpleicons.org/css/663399" width="24" alt="CSS icon"> | CSS | Responsive layouts, racing typography and reduced-motion support |
+| ↔ | ws | Local WebSocket broadcast with backpressure limit |
+| <img src="https://cdn.simpleicons.org/dotenv/ECD53F" width="24" alt="dotenv icon"> | dotenv | Local settings |
+| <img src="https://cdn.simpleicons.org/githubactions/2088FF" width="24" alt="GitHub Actions icon"> | electron-builder / GitHub Actions | Platform packaging and release workflow |
+
+README badges/icons require internet; the app itself does not. No frontend framework or chart dependency is required.
+
+## Configuration
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `FORZA_PORT` | `5500` | UDP receiving port; match the game |
+| `FORZA_HOST` | `0.0.0.0` | UDP bind address; receives from LAN |
+| `WEB_PORT` | `3050` | HTTP and WebSocket port |
+| `WEB_HOST` | `127.0.0.1` | Local browser access; use `0.0.0.0` for trusted LAN |
+| `FORZA_DATA_DIR` | Source: `data/`; installed: user-data `data/` | Optional absolute directory for cumulative history |
+
+Environment variables override `.env`. Do not run web and desktop receivers on the same port simultaneously. Port conflicts produce errors rather than silently changing the game destination.
+
+The source app reads `.env` from the working directory. Installed desktop builds first load `.env` from Electron's user-data directory; see [getting started](GETTING_STARTED.md#installed-desktop-builds) for exact paths. Downloading `.env` from Connect includes the four active network settings; retain any custom `FORZA_DATA_DIR` separately. Display preferences and layouts live in browser storage, outside `.env`.
+
+## Recording and exports
+
+1. Open **Session → Recording**, click **Record**, then drive. Live arrival rate follows the game; the dashboard draws at the browser refresh rate.
+2. Click **Stop recording**. Use **CSV** or **JSON** to download the session.
+3. After saving, use **Clear session** to allow a new recording. Clearing requires confirmation.
+
+Recording stops at **18,000 frames**, approximately five minutes at 60 packets/s, without dropping the beginning. A higher game frame rate fills it faster. Recordings live in memory and disappear when the receiver closes; export before quitting. Raw CSV has 91 columns: recording time offset, source, 88 original fields, and the final byte. JSON includes derived display data as well. The CSV source column is always `live`; it remains present for compatibility with earlier exports.
+
+## Saved bests and vehicle information
+
+**Session → Saved bests** keeps per-car speed, power, torque, RPM and acceleration peaks from every received active-driving packet, even while no browser or recording is open. **History coverage** shows packet counts, observed time/distance and water, curb and slip time. **Field records** shows minimum, maximum and latest values for all 88 fields, filtered by system. Export history downloads every saved car as JSON.
+
+History is saved every five seconds and on clean shutdown to `data/history.json` when running from source, or `<Electron user-data>/data/history.json` when installed. It survives browser reconnects and receiver restarts. This is a cumulative summary, not unlimited raw-packet storage; CSV/JSON recordings remain separate. Data discarded by previous versions cannot be recovered. See [history scope and formulas](docs/ANALYTICS.md#persistent-packet-history).
+
+**Cockpit → Vehicle** shows ordinal, name source, model year when known, class number, PI, drivetrain, cylinders and group. The packet itself has no model-name text. A bundled, attributed [community lookup by HDR](https://gist.github.com/HDR/0659d1717bc61504bf83750628963f4f) covers 681 ordinals; unknown IDs remain visible and names may need correction after game updates. Lap minima can span different events because FH6 supplies no track ID.
+
+## Project map
+
+```text
+main.js / preload.js         Electron lifecycle and narrow UI bridge
+server/index.js              HTTP, WebSocket and control endpoints
+server/parser.js             Validated raw + derived packet decoder
+server/udp-listener.js       UDP reception, errors and packet statistics
+server/recorder.js           Bounded recording and full-field exports
+server/history.js            Persistent per-car extrema and observed totals
+public/data/cars.json        Attributed community ordinal-to-name lookup
+public/packet-schema.json    Canonical 88-field definitions
+public/index.html            Shared cockpit
+public/js/                   UI, localization and canvas instruments
+public/js/widget-layout.js   Widget registry, validation and presets
+public/js/dashboard.js       Shared widget mounting and layout controls
+public/css/                  Layouts, themes, instruments and responsive styles
+public/assets/               Original logos, icon and chassis drawings
+tests/                       Decoder, analytics, history, layout and transport tests
+docs/                        Guides, API, releases, screenshots and QA evidence
 ```
 
-### 2. Available Scripts
+## Development and validation
 
-| Command | Action |
-| :--- | :--- |
-| `npm run electron` | Launches the hardware-accelerated **Electron Desktop Window** |
-| `npm run web` / `npm start` | Launches the **Standalone Web Server** on `http://localhost:3050` |
-| `npm run demo` | Launches the web server with **Simulation Mode active** (no game needed) |
-| `npm run electron:demo` | Launches Electron with **Simulation Mode active** |
-
----
-
-## 🎮 In-Game Setup Guide
-
-### 1. Forza Horizon 5 & Forza Horizon 4
-1. Open the pause menu and go to **Settings** ➔ **HUD and Gameplay**.
-2. Scroll to the bottom to find **DATA OUT**:
-   - **Data Out**: `ON`
-   - **Data Out IP Address**:
-     - *If playing on the same PC*: `127.0.0.1`
-     - *If playing on Xbox / Another PC*: Your PC's Local IP (e.g. `192.168.1.150`)
-   - **Data Out IP Port**: `5300` (matches `FORZA_PORT`)
-
-### 2. Forza Motorsport (2023) & Forza Motorsport 7
-1. Navigate to **Options** ➔ **Gameplay & HUD**.
-2. Scroll down to **Telemetry / Data Out**:
-   - **Data Out**: `ON`
-   - **Data Out Packet Format**: `Car Dash`
-   - **Data Out IP Address**: `127.0.0.1` (or your PC's LAN IP)
-   - **Data Out IP Port**: `5300`
-
-### 3. Windows PC Game Pass / Microsoft Store Loopback Exemption
-If you are playing on Windows Store / Game Pass, Windows isolates UWP apps from sending UDP loopback to `127.0.0.1`. Run this single command in **PowerShell as Administrator**:
-
-```powershell
-# For Forza Horizon 5:
-CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.624F8B84B80_8wekyb3d8bbwe"
-
-# For Forza Motorsport (2023):
-CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.FalconBaseGame_8wekyb3d8bbwe"
+```sh
+npm test                 # decoder, analytics, localization, recorder and local socket tests
+npm run package          # unpacked desktop application for your host platform
+npm run dist             # platform installers / archives in dist/
 ```
 
----
+Socket tests need permission to bind loopback ports. Tests cover all 88 offsets, malformed lengths, non-finite floats, timestamp wrap, signed inputs, puddle integers, FH6's inserted fields, recorder capacity, complete CSV exports, origin rejection, real UDP transport and stale state. Synthetic test fixtures verify calculations; real-game hardware compatibility still needs a driving session. See [validation notes](docs/VALIDATION.md) for what was actually exercised.
 
-## 📊 All 84+ Telemetry Data Points
+The [local HTTP/WebSocket API](docs/API.md) documents receiver status, network settings, history, recording controls and exports. There is no cloud service or game-control endpoint.
 
-The application unpacks every single byte streamed by the game engine in Little-Endian byte order:
+## Windows desktop downloads
 
-### 1. Engine & Vehicle Dynamics
-| Offset | Field Name | Type | Unit | Description |
-| :---: | :--- | :---: | :---: | :--- |
-| `0` | `IsRaceOn` | `s32` | boolean | `1` = Race active, `0` = Paused / In menus |
-| `4` | `TimestampMS` | `u32` | ms | Engine session timestamp counter |
-| `8` | `EngineMaxRpm` | `f32` | RPM | Redline engine RPM |
-| `12` | `EngineIdleRpm` | `f32` | RPM | Engine idle RPM |
-| `16` | `CurrentEngineRpm` | `f32` | RPM | Live engine RPM |
-| `20-28` | `Acceleration[X,Y,Z]` | `3xf32` | $m/s^2$ | Car local acceleration vector |
-| `32-40` | `Velocity[X,Y,Z]` | `3xf32` | $m/s$ | Car local velocity vector |
-| `44-52` | `AngularVelocity[X,Y,Z]` | `3xf32` | $rad/s$ | Car pitch, yaw, roll rates |
-| `56-64` | `Yaw, Pitch, Roll` | `3xf32` | $rad$ | Car global orientation angles |
+Build both a Windows x64 Setup installer and a portable executable:
 
-### 2. Wheels, Suspension & Tires (FL, FR, RL, RR)
-| Offset | Field Name | Type | Unit | Description |
-| :---: | :--- | :---: | :---: | :--- |
-| `68-80` | `NormalizedSuspensionTravel` | `4xf32` | 0.0 - 1.0 | Normalized suspension compression |
-| `84-96` | `TireSlipRatio` | `4xf32` | ratio | Longitudinal wheel slip (> 1.0 = traction loss) |
-| `100-112` | `WheelRotationSpeed` | `4xf32` | $rad/s$ | Wheel angular rotation speed |
-| `116-128` | `WheelOnRumbleStrip` | `4xs32` | boolean | Wheel is riding on curb / rumble strip |
-| `132-144` | `WheelInPuddleDepth` | `4xf32` | 0.0 - 1.0 | Water puddle immersion depth |
-| `148-160` | `SurfaceRumble` | `4xf32` | force | Controller force feedback surface rumble |
-| `164-176` | `TireSlipAngle` | `4xf32` | $rad$ | Lateral slip angle |
-| `180-192` | `TireCombinedSlip` | `4xf32` | ratio | Normalized combined slip ratio |
-| `196-208` | `SuspensionTravelMeters` | `4xf32` | meters | Actual damper stroke travel distance |
-
-### 3. Car Metadata
-| Offset | Field Name | Type | Range | Description |
-| :---: | :--- | :---: | :---: | :--- |
-| `212` | `CarOrdinal` | `s32` | integer | Unique ID of car make and model |
-| `216` | `CarClass` | `s32` | 0 - 6 | Performance Class (`0=D, 1=C, 2=B, 3=A, 4=S1, 5=S2, 6=X`) |
-| `220` | `CarPerformanceIndex` | `s32` | 100 - 999 | Car PI rating |
-| `224` | `DrivetrainType` | `s32` | 0 - 2 | `0=FWD, 1=RWD, 2=AWD` |
-| `228` | `NumCylinders` | `s32` | integer | Engine cylinder count |
-
-### 4. Dashboard Metrics (Speed, Powertrain, Temps, Inputs)
-*(Offsets below are for Forza Horizon 4/5 324-byte packet, including the 12-byte padding gap at 232–243)*
-| Offset | Field Name | Type | Unit | Description |
-| :---: | :--- | :---: | :---: | :--- |
-| `244-252` | `Position[X,Y,Z]` | `3xf32` | meters | Global world coordinates |
-| `256` | `Speed` | `f32` | $m/s$ | Speed in meters/sec (converted to KM/H and MPH) |
-| `260` | `Power` | `f32` | Watts | Live engine power (converted to HP and kW) |
-| `264` | `Torque` | `f32` | $\text{N}\cdot\text{m}$ | Live engine torque (converted to lb-ft) |
-| `268-280` | `TireTemp[FL,FR,RL,RR]` | `4xf32` | °F | Tire temperatures (converted to °C) |
-| `284` | `Boost` | `f32` | PSI | Turbocharger boost pressure (converted to Bar) |
-| `288` | `Fuel` | `f32` | 0.0 - 1.0 | Remaining fuel fraction |
-| `292` | `DistanceTraveled` | `f32` | meters | Total race distance accumulated |
-| `296-308` | `Best, Last, Current, Race Time` | `4xf32` | seconds | Lap and race timing in seconds |
-| `312` | `LapNumber` | `u16` | integer | Current lap number |
-| `314` | `RacePosition` | `u8` | integer | Race position (e.g. `1` for P1) |
-| `315` | `Accel` | `u8` | 0 - 255 | Throttle pedal input percentage |
-| `316` | `Brake` | `u8` | 0 - 255 | Brake pedal input percentage |
-| `317` | `Clutch` | `u8` | 0 - 255 | Clutch pedal input percentage |
-| `318` | `HandBrake` | `u8` | 0 - 255 | Handbrake status |
-| `319` | `Gear` | `u8` | 0 - 10 | Current gear (`0=Reverse, 1..10=Forward, 11=Neutral`) |
-| `320` | `Steer` | `s8` | -128 to 127 | Steering wheel input angle |
-
----
-
-## ⚙️ Configuration & Environment
-
-Configuration is stored in `.env` (copy from `.env.example`):
-
-```ini
-# UDP Port to receive game packets (must match in-game 'Data Out IP Port')
-FORZA_PORT=5300
-FORZA_HOST=0.0.0.0
-
-# HTTP & WebSocket Port for HUD Dashboard
-WEB_PORT=3050
-WEB_HOST=0.0.0.0
-
-# Telemetry broadcast rate (Hz)
-BROADCAST_RATE_HZ=60
-
-# Default telemetry measurement units ('metric' | 'imperial')
-DEFAULT_UNITS=metric
-
-# Auto-start simulation mode when launching server
-SIMULATION_MODE=false
+```sh
+npm run dist:win
 ```
 
----
+Outputs are `dist/Forza-Telemetry-Out-1.6.0-Windows-x64-Setup.exe` and `dist/Forza-Telemetry-Out-1.6.0-Windows-x64-Portable.exe`. The installed desktop app includes the receiver; end users do not need Node.js. Local builds are unsigned. Only distribute artifacts after verifying them on Windows.
 
-## 📦 Releases & Versioning
+Check [GitHub Releases](https://github.com/sahmedhusain/forza-telemetry-out/releases) for uploaded builds and their release notes. Executables are build artifacts and are not committed to the source repository. A source push alone does not publish an installer.
 
-### [v1.0.0] - Official Release (Current)
-- ✨ **Universal Multi-Game UDP Parser**: Fully compliant with FM7 (311b), FH4/FH5 (324b), FM 2023 (331b), and Sled (232b).
-- 🏎️ **Forza DNA Styling**: High-contrast racing angles, carbon fiber backdrop textures, and Horizon pink / Apex cyan color themes.
-- ⏱️ **Apex Canvas Tachometer & Shift Lights**: 60 FPS sweeping arc, digital speed readout, and GT3-style shift LEDs.
-- 🔊 **Web Audio Shift Buzzer**: Synthesized millisecond-accurate rev limit beeps.
-- 🌐 **G-Force Friction Circle**: 2D accelerometer with fading inertia trails.
-- 🛞 **4-Wheel Matrix**: Dynamic tire temperature heatmap, damper deflection, and slip ratio alerts.
-- ⚙️ **Powertrain Dyno**: Real-time HP, kW, Nm, lb-ft, boost pressure (Bar/PSI), and 0-100 km/h automated sprint timer.
-- 🕹️ **Porsche 911 GT3 RS Simulator**: Built-in test drive generator.
-- 📱 **Dual Electron & Web Server Architecture**: Supports desktop app and secondary rig screens (iPads, Android tablets, phones).
-- 💾 **Telemetry Recorder**: Real-time session capture with CSV and JSON exports.
-- 🔍 **Raw Data Inspector**: Interactive search drawer inspecting all 84+ parameters.
+## Version and releases
 
----
+Current source version: **1.6.0**. The existing 1.0.0 prototype has been updated around the supplied FH6 specification. [Changelog](CHANGELOG.md) records the changes. [Release instructions](docs/RELEASING.md) describe local packaging and the tag-driven Windows/macOS/Linux workflow. No public release or signed installer is claimed merely because a version number exists. [Repository releases](https://github.com/sahmedhusain/forza-telemetry-out/releases).
 
-## 🤝 Contributing
+## Contributing
 
-Contributions, feature requests, and bug reports are warmly welcome!
-1. Fork the Project.
-2. Create your Feature Branch (`git checkout -b feature/EpicFeature`).
-3. Commit your Changes (`git commit -m 'Add some EpicFeature'`).
-4. Push to the Branch (`git push origin feature/EpicFeature`).
-5. Open a Pull Request.
+Report the game version, operating system, packet size and reproducible steps. Do not include private network details or recordings without reviewing them. For decoder changes, update the schema/reference and add a binary fixture assertion. Run `npm test`, inspect desktop and phone layouts, and keep unavailable-data indicators clear. Other Forza games are outside this release's tested scope, even if a packet length happens to match.
 
----
+## License and attribution
 
-## 📄 License
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more details.
-
----
-
-<div align="center">
-  <sub>Engineered with passion for sim racing fans worldwide. Not officially affiliated with Playground Games, Turn 10 Studios, or Xbox Game Studios. All Forza trademarks are property of their respective owners.</sub>
-</div>
+Source code and original companion artwork: [MIT](LICENSE). Third-party brands and icons remain their owners' property and are not relicensed by this repository. Forza identity research: [official Horizon 6 page](https://forza.net/forzahorizon6) and [official reveal](https://forza.net/news/forza-horizon-6-reveal). Packet source: [Forza Support](https://support.forza.net/hc/en-us/articles/51744149102611-Forza-Horizon-6-Data-Out-Documentation). Tech icons: [Simple Icons](https://simpleicons.org/). See [notices](THIRD_PARTY_NOTICES.md).

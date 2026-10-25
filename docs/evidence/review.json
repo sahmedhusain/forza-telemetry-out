@@ -1,0 +1,89 @@
+{
+  "contract": "../DESIGN.md and ../ANALYTICS.md — v1.4, compact screen navigation, hidden scrollbar tracks, live-only telemetry, cumulative history and attributed model lookup.",
+  "targetViewports": [
+    "1440x900",
+    "390x844",
+    "844x390",
+    "768x1024",
+    "1024x768",
+    "1080x1920",
+    "1920x1080",
+    "514x913"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Labeled native selectors replace clipped phone tabs. Wider tabs retain arrows/Home/End, panels/tables are focusable and scrolling remains available with hidden tracks. Arabic physical axle orientation remains fixed. Screen-reader testing remains unperformed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Eight viewport captures inspected, including the annotated 514x913 phone. All seven views and 25 smaller screens checked for horizontal overflow with extra-large numbers. Tablet tabs wrap; landscape instruments fit; phone historical fields use labeled cards."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Stable initial structure and connecting text before data/schema load."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "With no game stream, waiting state and em dashes remain visible. No fabricated demo values."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Forbidden UDP port submitted through browser form; existing receiver retained and error shown. Endpoint tests verify occupied-port rollback."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "Missing/insufficient lap and suspension statistics display em dashes; parser tests reject partial datagrams."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "18 automated tests pass, including receiver-independent extrema/persistence, corrupt-file preservation, lap rewind, community lookup and local UDP transport. Packaged desktop launch checked. Historical field-card fit checked with explicit isolated fixture and cleared."
+    },
+    "permission": {
+      "status": "pass",
+      "evidence": "Browser fullscreen request and exit completed without exception during UI check. OS firewall permission is documented separately and remains hardware-untested."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x900",
+      "artifact": "settings-dark-v140.png",
+      "observation": "English dark settings, no sound or demo controls; size/theme/language options present."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "phone-ar-v140.png",
+      "observation": "Arabic light phone front-axle screen with large readouts and View/Screen selectors."
+    },
+    {
+      "viewport": "844x390",
+      "artifact": "phone-landscape-v140.png",
+      "observation": "Landscape cockpit places speed/RPM/vehicle and the powertrain strip inside the initial viewport."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "tablet-es-v140.png",
+      "observation": "Spanish tablet lap screen, wrapped session tabs all visible."
+    },
+    {
+      "viewport": "1024x768",
+      "artifact": "tablet-fr-v140.png",
+      "observation": "French dark analysis; translated graph tabs and waiting state."
+    },
+    {
+      "viewport": "1080x1920",
+      "artifact": "portrait-ar-v140.png",
+      "observation": "Arabic portrait chassis; physical left/right corners preserved, translated labels and large values."
+    },
+    {
+      "viewport": "1920x1080",
+      "artifact": "landscape-light-v140.png",
+      "observation": "English light language/theme/number-size settings on a wide monitor."
+    },
+    {
+      "viewport": "514x913",
+      "artifact": "connection-receiver-v160.png",
+      "observation": "Receiver controls fit 514x913 with title/toolbar and scrollbar tracks removed. Recaptured on 1.6.0 for publication; the original address capture is kept outside the repository because it contained local LAN addresses."
+    }
+  ]
+}

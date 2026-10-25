@@ -1,0 +1,71 @@
+{
+  "contract": "../DESIGN.md v1.5 review contract and ../RESEARCH.md source observations. Existing design tokens, no audio/demo, sampled data boundaries and reversible focus.",
+  "targetViewports": [
+    "390x844",
+    "844x390",
+    "768x1024",
+    "1440x900",
+    "1920x1080"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Native ArrowRight advanced slider/model cursor from 70 to 71. Escape exited focus and restored the header control. Exit/source stay visible. Color-coded axes also use solid/dashed lines and different point shapes. Full screen-reader QA remains unperformed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Five target sizes checked across all main/subscreens and six graph screens with extra-large values: no horizontal document/pane overflow. Arabic raw identifiers, scalar timestamps and an LTR time slider inspected. Hidden scrollbar tracks retained."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Stable layout before schema; selectors populate with 88 primary fields and 88 plus a none option for comparison."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "No packets: waiting text, em dashes and disabled hold/cursor; actual no-data capture review-empty-v150.png."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Existing UDP occupied-port rollback/configuration errors remain covered by integration tests. Invalid/missing engine maximum clears its scale in a dedicated gauge test."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "One sample can be held but the slider remains disabled; missing secondary raw value displays em dash. No zero substitution or fabricated interpolation."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "23 tests pass. Held samples remain at 121 after live source grows to 122; selected sample timestamp matches the exact captured index. Gap boundary preserved. Fixtures are isolated browser memory and cleared by reload."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "The new held-review and CSS focus controls request no browser permissions. Existing fullscreen/network behavior remains covered by the baseline; target-device firewall prompts remain untested."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "390x844",
+      "artifact": "review-ar-fixture-v150.png",
+      "observation": "Arabic light paired-channel view; raw and rounded values, shared sampled cursor, explicit fixture label."
+    },
+    {
+      "viewport": "844x390",
+      "artifact": "review-landscape-fixture-v150.png",
+      "observation": "Landscape focus retains source and exit; plot and controls do not overlap."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "review-tablet-fixture-v150.png",
+      "observation": "Long raw channel identifier in Arabic tablet layout, independent scales and exact values."
+    },
+    {
+      "viewport": "1440x900",
+      "artifact": "review-desktop-fixture-v150.png",
+      "observation": "Desktop paired signals with a visible gap and held-time cursor; explicit fixture label."
+    },
+    {
+      "viewport": "1920x1080",
+      "artifact": "review-wide-fixture-v150.png",
+      "observation": "French wide-screen single-channel mode, translated no-comparison option and exact-value detail."
+    }
+  ]
+}

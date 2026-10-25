@@ -1,181 +1,136 @@
-# 🏁 Getting Started with Forza Telemetry Out
+# Getting started
 
-Welcome to **Forza Telemetry Out**! This guide walks you through setting up real-time telemetry streaming from **Forza Horizon 5**, **Forza Horizon 4**, **Forza Motorsport (2023)**, and **Forza Motorsport 7** on both **PC (Steam / Windows Store)** and **Xbox Series X|S / Xbox One** consoles.
+For version **1.6.0**. [Feature tour and screenshots](README.md) · [Documentation index](docs/README.md) · [Analytics and limits](docs/ANALYTICS.md)
 
----
+## Requirements
 
-## ⚡ Quick Start in 60 Seconds
+- Node.js 22 or later and npm for source use.
+- Windows, macOS or Linux for the receiver. The game runs on its supported platform; a Mac/Linux receiver can receive from a gaming PC or console on the same LAN.
+- Forza Horizon 6 configured to send Data Out.
 
-### 1. Prerequisites
-- **Node.js** (v18 or newer) - [Download Node.js](https://nodejs.org/)
-- **Git**
+## Install from source
 
-### 2. Clone & Install
-```bash
-# Clone the repository
+```sh
 git clone https://github.com/sahmedhusain/forza-telemetry-out.git
 cd forza-telemetry-out
-
-# Install dependencies
-npm install
+npm ci
 ```
 
-### 3. Launch the Application
+Create local configuration if needed:
 
-You can run **Forza Telemetry Out** in two modes:
-
-#### Option A: Electron Native Desktop App
-```bash
-npm run electron
+```sh
+# macOS / Linux
+cp .env.example .env
 ```
-*Launches the dedicated hardware-accelerated desktop window with custom dark motorsport titlebar and fullscreen support (`F11`).*
 
-#### Option B: Standalone Web Server (for PC, iPad, Tablets, & Phones)
-```bash
-npm run web
-# Or simply:
-npm start
-```
-*Starts the background UDP listener and HTTP/WebSocket server. Open `http://localhost:3050` on your PC, or `http://<YOUR_PC_IP>:3050` on any phone, tablet, or secondary monitor mounted to your sim racing rig!*
-
-#### Option C: Instant Demo / Test Drive (No Game Needed)
-```bash
-npm run demo
-```
-*Boots the server with the built-in realistic **Porsche 911 GT3 RS** physics simulator so you can explore all gauges, shift buzzers, and telemetry analytics immediately.*
-
----
-
-## 🎮 Configuring In-Game Telemetry ("Data Out")
-
-Forza transmits UDP packets using a built-in feature called **Data Out**. Follow the instructions below for your specific game and platform:
-
-### 1. Forza Horizon 5 / Forza Horizon 4
-
-1. Launch **Forza Horizon 5** (or FH4).
-2. Go to **Settings** (or Options) ➔ **HUD and Gameplay**.
-3. Scroll down to the bottom section titled **DATA OUT**:
-   - **Data Out**: Set to `ON`
-   - **Data Out IP Address**:
-     - **If playing on the same PC as this app**: Enter `127.0.0.1` (or your local IP)
-     - **If playing on Xbox / Another PC**: Enter the **Local IP** of the computer running this app (e.g., `192.168.1.150`)
-   - **Data Out IP Port**: `5300` (must match `FORZA_PORT` in your `.env`)
-4. Save and return to the game. When you enter a car and drive, telemetry starts broadcasting at 60 Hz!
-
----
-
-### 2. Forza Motorsport (2023) / Forza Motorsport 7
-
-1. Launch **Forza Motorsport**.
-2. Navigate to **Options** ➔ **Gameplay & HUD**.
-3. Scroll to **Telemetry / Data Out**:
-   - **Data Out**: `ON`
-   - **Data Out Packet Format**: Set to `Car Dash` (provides full tire temps, inputs, power, and lap times)
-   - **Data Out IP Address**: `127.0.0.1` (or your PC's LAN IP if playing on Xbox)
-   - **Data Out IP Port**: `5300`
-4. Save settings and head to the track.
-
----
-
-## 🪟 Windows PC: UWP Loopback Exemption (Crucial for Microsoft Store & Game Pass)
-
-> [!IMPORTANT]
-> If you are playing the **Microsoft Store or PC Game Pass** version of Forza on the same PC where this app is running, Windows UWP security sandboxing blocks local loopback UDP (`127.0.0.1`) by default.
-> **Steam versions do NOT have this limitation.**
-
-### How to Enable Loopback in 10 Seconds:
-
-1. Press `Win + X` and select **Terminal (Admin)** or **PowerShell (Administrator)**.
-2. Run the exemption command for your game:
-
-#### For Forza Horizon 5:
 ```powershell
-CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.624F8B84B80_8wekyb3d8bbwe"
+# Windows PowerShell
+Copy-Item .env.example .env
 ```
 
-#### For Forza Horizon 4:
-```powershell
-CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.SunriseBaseGame_8wekyb3d8bbwe"
-```
+Do not overwrite an already customized `.env` without keeping your settings. `.env` stays local; commit changes to `.env.example` when documenting defaults. All settings are listed in the [configuration table](README.md#configuration).
 
-#### For Forza Motorsport (2023):
-```powershell
-CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.FalconBaseGame_8wekyb3d8bbwe"
-```
+| Connection | Default | Where to use it |
+|---|---|---|
+| Game → receiver | UDP `5500` | FH6 Data Out destination port; inbound private-network UDP rule |
+| Browser → receiver | TCP `3050` | `http://127.0.0.1:3050` locally; inbound TCP rule only for LAN viewers |
+| UDP listener | `0.0.0.0` | Binds all IPv4 interfaces; never use as the game's destination address |
+| Web listener | `127.0.0.1` | Local access; change `WEB_HOST` to `0.0.0.0` only for trusted LAN viewing |
 
-#### For Forza Motorsport 7:
-```powershell
-CheckNetIsolation.exe LoopbackExempt -a -n="Microsoft.ApolloBaseGame_8wekyb3d8bbwe"
-```
+Changing the web port does not change the game's UDP port. Shell environment variables take precedence over `.env`. Restart after editing configuration files.
 
-3. You should see `OK.` in PowerShell. Loopback is now permanently enabled!
+## Choose one launch mode
 
----
+| Command | Opens / starts |
+|---|---|
+| `npm start` or `npm run web` | Receiver; open http://127.0.0.1:3050 yourself |
+| `npm run electron` or `npm run dev` | Receiver plus desktop window |
 
-## 📱 Mounting a Second Screen or Tablet on Your Sim Rig
+Run only one receiver per port. Quit with Ctrl+C in a terminal or quit the desktop application. Closing the last window on macOS leaves the application running until you choose Quit. Recordings must be exported before quitting.
 
-You can turn any smartphone, iPad, or Android tablet into a physical racing dash display:
+## Connect the game
 
-1. Ensure your phone/tablet is connected to the same Wi-Fi network as your PC.
-2. Find your computer's local IP address:
-   - **Windows**: Run `ipconfig` in Command Prompt (look for *IPv4 Address*, e.g., `192.168.1.120`).
-   - **macOS / Linux**: Run `ifconfig` or `ip addr`.
-3. Open Safari, Chrome, or Firefox on your phone/tablet and navigate to:
-   ```
-   http://192.168.1.120:3050
-   ```
-4. Tap the **⛶ FULLSCREEN** button on the top right for an edge-to-edge sim racing dashboard!
+1. Launch the receiver on the computer where you want to collect telemetry.
+2. Find that computer's LAN IPv4 address (Windows: `ipconfig`; macOS: System Settings → Network → Details → TCP/IP; Linux: network settings). Prefer a DHCP reservation if the address changes often.
+3. In FH6, open **Settings → HUD and Gameplay**.
+4. Set **Data Out** to **On**.
+5. Set **Data Out IP Address** to the receiver IP. Use `127.0.0.1` only when game and receiver run on the same PC. Never enter `0.0.0.0` as the destination.
+6. Set **Data Out IP Port** to **5500** (or your configured `FORZA_PORT`). Do not choose 5200–5300.
+7. Allow the receiver through the private-network firewall for inbound UDP on that port.
+8. Drive. Look for **LIVE / RECEIVING** and moving instruments.
 
----
+Forza sends only during driving, not in menus, pause, replay, rewind or after a finished race. This is normal. The UI holds the last sample, fades the cockpit and labels the source as waiting after two seconds. [Official configuration](https://support.forza.net/hc/en-us/articles/51744149102611-Forza-Horizon-6-Data-Out-Documentation).
 
-## ⚙️ Environment Configuration (`.env`)
+## Phone / tablet / second screen
 
-You can customize port bindings, units, and logging in `.env`:
+Set `WEB_HOST=0.0.0.0` in `.env`, restart and open `http://RECEIVER_IP:3050` from a device on the same trusted LAN. If needed allow inbound TCP 3050 on the private-network firewall. The game still sends UDP to the receiver, not to the phone. Every connected device can control the shared recording; this is a single-user local utility, not an authenticated public service.
 
-```ini
-# UDP Port to receive Forza game packets
-FORZA_PORT=5300
+## Navigate and customize
 
-# UDP interface (0.0.0.0 binds to all network cards)
-FORZA_HOST=0.0.0.0
+Start in **Dashboard**. Choose a preset and use Edit widgets to add/hide, reorder and resize the panels. Drag on desktop or use the up/down controls on touch/keyboard. Changes save per browser/device. Reset layout restores the default without deleting telemetry.
 
-# Web Dashboard HTTP & WebSocket port
-WEB_PORT=3050
+Choose a top-level tab: Dashboard, Cockpit, Chassis, Analysis, Session, Channels, Connect or Settings. Then choose a smaller screen. Phones use View/Screen drop-downs; wider displays use tabs. Scroll gestures and keyboard scrolling work with scrollbar tracks hidden.
 
-# Default telemetry units ('metric' for km/h, °C, Bar | 'imperial' for mph, °F, PSI)
-DEFAULT_UNITS=metric
+In **Connect → Addresses**, select and copy a receiver IP. Match the displayed UDP port in the game. **Diagnostics** shows packet health; **Phone access** explains LAN viewing; **Receiver** changes the port. You can apply a different UDP port while recording is stopped. If binding fails, the previous port remains active. Download .env after changing the port to preserve it for future launches.
 
-# Auto-start simulation mode when launching server
-SIMULATION_MODE=false
-```
+Use **Settings → Language and theme** for 🇬🇧 English, 🇸🇦 العربية, 🇪🇸 Español or 🇫🇷 Français; dark/light/system theme; and standard/large/extra-large numbers. Arabic uses right-to-left navigation. **Display**, **Instruments** and **Tires** contain units, accent, density, arc/digital display, reduced motion, G-scale, history, visual shift threshold and tire-color preferences. These save on this device. See [formulas and visual explanations](docs/ANALYTICS.md). Record/Stop, CSV/JSON downloads and Clear Session are in **Session → Recording**. **Saved bests**, **History coverage** and **Field records** contain cumulative receiver history.
 
----
+**Analysis → Compare channels** pairs two raw fields on independent axes. Tap the plot or move Inspect sample to hold the current window; Resume live follows new samples again. Exact raw values remain under the large rounded readings. The held window includes the sampled car ID/PI, so it can remain identifiable after changing cars.
 
-## 🛠️ Telemetry Session Recording & Exporting
+Use the header focus control to expand the current screen; Escape or Exit focus restores navigation. Connection freshness stays visible. Focus does not request operating-system fullscreen.
 
-1. Click **● RECORD** on the top header bar to start logging telemetry frames.
-2. Complete your hot lap or sprint test.
-3. Click **● REC (XXs)** to stop.
-4. The dashboard will prompt you to export the session:
-   - **CSV Export**: `http://localhost:3050/api/recorder/export/csv` (Ideal for Excel, Python Pandas, and MoTeC)
-   - **JSON Export**: `http://localhost:3050/api/recorder/export/json` (Raw JSON frames with full precision)
+## Read the dashboard
 
----
+- **Settings → Display → Units** switches speed, power (kW/hp) and distance (km/mi). Torque remains N·m and boost remains psi, as labeled.
+- **Settings → Display → Fullscreen** uses browser fullscreen or the desktop window. Desktop also supports F11.
+- **Contact patch** shows raw tire temperatures because the supplied documentation does not define their units. Compression bars are 0–100%. Slip magnitude greater than 1 indicates loss of grip.
+- **All channels** shows every original value and byte offset. Search and filter by system; Freeze pauses this table only, while the cockpit and recording continue.
+- **Record / Stop** captures frames. Download CSV or JSON, then clear before starting a fresh session. The 18,000-frame limit stops capture without discarding old frames.
 
-## ❓ Frequently Asked Questions & Troubleshooting
+## Installed desktop builds
 
-### Q1: The dashboard says "LISTENING (5300)" but no telemetry updates.
-1. Check that **Data Out** is toggled **ON** in Forza's HUD settings.
-2. Confirm that the **Data Out IP Port** matches `FORZA_PORT` (default `5300`).
-3. If playing on PC Game Pass, make sure you ran the PowerShell `CheckNetIsolation` loopback command shown above.
-4. Verify Windows Defender Firewall allows UDP traffic on port 5300.
+For Windows Setup/Portable EXE files use `npm run dist:win`. Build the current platform using `npm run dist`; files appear in `dist/`. Unsigned local builds can trigger platform trust prompts. Published signed/notarized installers require the maintainer's certificates; this repository does not include them.
 
-### Q2: How do I switch between Metric (KM/H) and Imperial (MPH)?
-Click the **METRIC / IMPERIAL** button on the top header bar. It instantly updates all gauges, tire temperatures (°C vs °F), and boost (Bar vs PSI).
+The packaged app uses defaults unless environment variables or a `.env` file are supplied. Place `.env` in Electron's user-data directory (normally `forza-telemetry-out` beneath the platform's application-data directory):
 
-### Q3: How do I mute the shift buzzer?
-Click the **🔇 MUTED / 🔊 AUDIO ON** button on the top header. The audio synthesizer uses the native Web Audio API with zero external media files.
+- Windows: `%APPDATA%\forza-telemetry-out\.env`
+- macOS: `~/Library/Application Support/forza-telemetry-out/.env`
+- Linux: `~/.config/forza-telemetry-out/.env`
 
----
+Create the directory if necessary. Copy the four settings from `.env.example`; restart after changing them. The build also includes a template in its resources directory. Launching from source uses the repository's `.env` instead.
 
-Enjoy your racing! If you encounter any issues, feel free to open an issue on [GitHub](https://github.com/sahmedhusain/forza-telemetry-out/issues).
+Saved history is stored in `data/history.json` for source launches, or `data/history.json` inside the user-data directory above for installed builds. The receiver saves every five seconds and on clean exit. Optional `FORZA_DATA_DIR` sets an absolute storage directory. Export all saved cars from Session → Saved bests. Existing raw recordings still require a separate export.
+
+## What survives a restart?
+
+| Data | Stored where | Lifetime / backup |
+|---|---|---|
+| Language, theme and display preferences | Browser/profile localStorage | Survives reloads; clearing site data removes it |
+| Widget selection, order and sizes | Browser/profile localStorage | Saved independently on each viewing device |
+| Browser graphs and held comparison | Page memory | Reloading the page clears them; use raw exports for durable analysis |
+| Raw recording | Receiver memory, shared by clients | Survives a browser reload; disappears when the receiver quits. Export CSV/JSON first. |
+| Per-car bests and field bounds | Receiver `data/history.json` | Survives clean restarts; export history or back up the file |
+| Receiver settings | Local `.env` or shell environment | Downloaded settings must be placed in the configuration directory before restarting |
+
+History is a cumulative summary, not an archive of every raw frame. The last unsaved interval can be lost on an abrupt shutdown. Clear Session deletes the raw recording only; Reset Analysis clears browser analysis; Restore Defaults resets display preferences; Reset layout restores Drive widgets.
+
+## Troubleshooting
+
+| Symptom | Check / fix |
+|---|---|
+| Waiting, no telemetry | Start driving; check destination IP, UDP port and private firewall rule |
+| UDP bind EADDRINUSE | Quit the other receiver, or change both the app and game to the same free UDP port |
+| HTTP EADDRINUSE | Quit the other dashboard or change `WEB_PORT`, then use the new URL |
+| UDP error | Confirm the bind address exists on this computer and port is valid, then restart |
+| Rejected packets | This release expects 324-byte FH6 packets and finite numeric values; check game/version |
+| Phone cannot connect | Use receiver LAN IP, `WEB_HOST=0.0.0.0`, TCP firewall rule and same network; guest networks may isolate devices |
+| Incorrect tire temperature units | Values are intentionally raw; FH6 source does not define the unit |
+| No car name / class name | Check Cockpit → Vehicle. Known ordinals use a community lookup; unknown IDs and class numbers remain raw |
+| Record won't start | Export the previous session, then clear it; check whether the frame limit was reached |
+| Old values after pause | Expected: the source status says waiting and instruments are faded |
+| Electron fails to launch | Reinstall with `npm ci`; check that Electron's platform binary downloaded successfully |
+| Tests fail with EPERM | Your execution sandbox must permit local TCP/UDP socket binding |
+
+## Next steps
+
+Read the [full packet reference](docs/PROTOCOL.md), [README](README.md) and [release guide](docs/RELEASING.md). Keep a real-drive sample locally when validating new game updates; synthetic tests cannot prove hardware compatibility.

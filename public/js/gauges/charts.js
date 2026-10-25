@@ -11,7 +11,11 @@ class TelemetryTimelineChart {
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
 
-    this.maxPoints = 160; // Rolling window points
+    this.windowSeconds = 20;
+    this.maxPoints = 200; // Rolling window points
+    this.gaps = [];
+    this.times = [];
+    this.lastSample = 0;
     this.speedHistory = [];
     this.throttleHistory = [];
     this.brakeHistory = [];
@@ -24,6 +28,7 @@ class TelemetryTimelineChart {
   setupHiDPI() {
     if (!this.canvas) return;
     const rect = this.canvas.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
     const dpr = window.devicePixelRatio || 1;
     this.canvas.width = rect.width * dpr;
     this.canvas.height = rect.height * dpr;
@@ -34,6 +39,11 @@ class TelemetryTimelineChart {
 
   pushFrame(telemetry) {
     if (!telemetry) return;
+    const now = performance.now();
+    if (now - this.lastSample < 100) return;
+    this.gaps.push(this.lastSample > 0 && now - this.lastSample > 500);
+    this.lastSample = now;
+    this.times.push(now);
 
     const speedFrac = telemetry.speed ? Math.min(1, (telemetry.speed.kmh || 0) / 350) : 0;
     const throttleFrac = telemetry.inputs ? (telemetry.inputs.throttlePercent || 0) / 100 : 0;
@@ -45,7 +55,9 @@ class TelemetryTimelineChart {
     this.brakeHistory.push(brakeFrac);
     this.boostHistory.push(boostFrac);
 
-    if (this.speedHistory.length > this.maxPoints) {
+    while (this.times.length && (this.times[0] < now - this.windowSeconds * 1000 || this.times.length > this.maxPoints)) {
+      this.gaps.shift();
+      this.times.shift();
       this.speedHistory.shift();
       this.throttleHistory.shift();
       this.brakeHistory.shift();
@@ -55,9 +67,13 @@ class TelemetryTimelineChart {
     this.render();
   }
 
+  clear() {
+    this.lastSample = 0; this.gaps = []; this.times = []; this.speedHistory = []; this.throttleHistory = []; this.brakeHistory = []; this.boostHistory = [];
+  }
+
   render() {
     const ctx = this.ctx;
-    if (!ctx) return;
+    if (!ctx || !this.width || !this.height || !this.canvas.getClientRects().length) return;
 
     const w = this.width;
     const h = this.height;
@@ -65,7 +81,8 @@ class TelemetryTimelineChart {
 
     // 1. Draw Subtle Horizontal Grid
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    const colors=chartColors();
+    ctx.strokeStyle = colors.grid;
     for (let i = 1; i <= 3; i++) {
       const y = (h / 4) * i;
       ctx.beginPath();
@@ -87,19 +104,19 @@ class TelemetryTimelineChart {
       ctx.lineJoin = 'round';
 
       for (let i = 0; i < data.length; i++) {
-        const x = (startIdx + i) * stepX;
+        const x = w * (1 - (this.lastSample - this.times[i]) / (this.windowSeconds * 1000));
         const y = h - (data[i] * (h - 10)) - 5;
-        if (i === 0) ctx.moveTo(x, y);
+        if (i === 0 || this.gaps[i]) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
     };
 
     // 3. Draw traces in order
-    drawTrace(this.brakeHistory, '#ff1e42', 2);     // Red Brake
-    drawTrace(this.throttleHistory, '#00ff88', 2);  // Green Throttle
-    drawTrace(this.boostHistory, '#af52de', 1.5);   // Purple Boost
-    drawTrace(this.speedHistory, '#00f0ff', 2.5);   // Cyan Speed
+    drawTrace(this.brakeHistory, colors.pink, 2);     // Red Brake
+    drawTrace(this.throttleHistory, colors.lime, 2);  // Green Throttle
+    drawTrace(this.boostHistory, colors.amber, 1.5);   // Purple Boost
+    drawTrace(this.speedHistory, colors.cyan, 2.5);   // Cyan Speed
   }
 }
 
