@@ -1,8 +1,10 @@
 # Validation — version 1.6.1
 
-Checked 25 October 2026. [Current polish evidence](evidence/review-161.json) · [1.6 widget evidence](evidence/review-160.json) · [1.5 channel-review evidence](evidence/review-150.json) · [Documentation index](README.md)
+Checked 25 October 2026. [Current header evidence](evidence/review-header.json) · [Prior polish evidence](evidence/review-161.json) · [1.6 widget evidence](evidence/review-160.json) · [1.5 channel-review evidence](evidence/review-150.json) · [Documentation index](README.md)
 
 ## Completed locally
+
+- Header controls checked in normal/edit mode at all five viewports and four languages. Routine save text is blank/hidden; simulated storage failure and recovery retain visible error feedback. Add/hide/reorder/size/reset, empty recovery, detail navigation and focus mode pass browser assertions. Local Mac/Windows packages were refreshed, all 41 payload files matched source in each archive, and the packaged Mac header checks passed.
 
 - All 29 automated tests pass: packet decoding, recorder, history, analytics, channel review, translations, RPM limits, local UDP/WebSocket pipeline and six widget-layout tests.
 - All 26 widget bodies checked at 390×844, 844×390, 768×1024, 1440×900 and 1920×1080, in/out of edit mode with extra-large numbers. Tire/slip widgets were saved at 3 columns/200px: their content-safe display floors retained all corners and plot labels. No widget body escaped its frame, duplicate IDs or document overflow were found. Scrollbar tracks stayed hidden.

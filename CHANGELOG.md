@@ -2,6 +2,8 @@
 
 ## 1.6.1 — 2026-10-25
 
+- Move Dashboard layout/widget actions into the main header and remove the separate toolbar and routine save-success message. Preserve storage-error feedback, mobile/RTL wrapping and focus behavior.
+
 - Replace the hand-lettered header and README mark with unmodified official FH6 logo variants for light/dark themes; retain a separate Telemetry Out label, independent-project notice and companion app icon.
 - Give widget editor controls their own height instead of squeezing instrument content. Keep tire/slip widgets above a content-safe minimum while preserving saved layout values.
 - Recapture README GIF/PNGs with fitted custom layouts and complete widget rows; retain current language/RTL examples and static alternatives.

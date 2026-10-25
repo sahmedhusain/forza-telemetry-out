@@ -46,7 +46,7 @@ The game sends only while actively driving. Menus, pauses, replays, rewinds and 
 
 Dashboard is the default home page. It offers **26 widgets**, including engine/speed, powertrain, inputs, car/tire state, G-force, charts, current timing, laps, vehicle metadata, session analytics, all 88 raw channels, historical records, recording controls and connection health. Existing detail tabs remain available.
 
-1. Choose **Drive**, **Engineering** or **All widgets** as a starting layout.
+1. In the **top header**, choose **Drive**, **Engineering** or **All widgets** as a starting layout. Layout and widget actions share this header; there is no separate dashboard toolbar or routine save-success banner.
 2. Click **Edit widgets**. Drag the grip to reorder on desktop, or use **↑ / ↓** on touchscreens and keyboards.
 3. Choose **Width** (columns out of 12) and **Height** for each widget. Phones stack widgets at full width and retain the saved desktop widths.
 4. Use **×** to hide a widget, or choose one in the widget picker and click **Add widget**.

@@ -1,0 +1,71 @@
+{
+  "contract": "../DESIGN.md Header controls update: dashboard actions in main header, no separate row or success text, persistent error feedback, responsive/RTL/focus and existing widget behavior.",
+  "targetViewports": [
+    "390x844",
+    "844x390",
+    "768x1024",
+    "1440x900",
+    "1920x1080"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Native labeled selectors/buttons retained in a Layout group. Empty-layout recovery focuses the picker in the header. Visible focus styles retained, Arabic RTL layout inspected. Full screen-reader testing remains unperformed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Header controls fit at 390x844 Arabic/light, 844x390 French/dark, 768x1024 Spanish/light, 1440x900 and 1920x1080 English/dark, normal/edit modes with extra-large numbers. No controls escape the header or cause horizontal document overflow; scrollbar tracks remain hidden."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Browser and packaged macOS app mount controls in header, retain 88 channel rows and all original widgets without null-reference errors."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "Normal save status is empty and hidden. Explicit empty layout opens the header picker and Add recovers an instrument. No game data generated."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Forced isolated Storage.setItem failure shows the translated temporary-layout message. Restoring storage and saving clears/hides the message, without a success banner."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "No game stream retains waiting/em-dash state; moving layout controls preserves original instrument nodes and available-data behavior."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "29 tests pass. Browser Add/Move/Hide, persisted 8-column/480px sizes, reset, same-canvas identity and detail navigation checked. Focus hides layout controls normally and preserves them while editing. Packaged macOS app reports headerControls/noViewToolbar/quietSave true; 41 files match in all three packaged app archives."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "Local DOM/CSS relocation adds no runtime permission, network endpoint or data exposure. Release publication remains outside this change."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "390x844",
+      "artifact": "header-phone.png",
+      "observation": "Arabic light header wraps layout, picker and buttons; no success text."
+    },
+    {
+      "viewport": "844x390",
+      "artifact": "header-landscape.png",
+      "observation": "French landscape controls fit inside the main header; canvas keeps internal scrolling."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "header-tablet.png",
+      "observation": "Spanish light editing uses a wrapped header with every action available."
+    },
+    {
+      "viewport": "1440x900",
+      "artifact": "header-desktop.png",
+      "observation": "Single desktop header contains layout, editing and widget actions."
+    },
+    {
+      "viewport": "1920x1080",
+      "artifact": "header-wide.png",
+      "observation": "Wide header retains logo/source/focus and all editing actions without separate row."
+    }
+  ]
+}

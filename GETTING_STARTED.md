@@ -67,7 +67,7 @@ Set `WEB_HOST=0.0.0.0` in `.env`, restart and open `http://RECEIVER_IP:3050` fro
 
 ## Navigate and customize
 
-Start in **Dashboard**. Choose a preset and use Edit widgets to add/hide, reorder and resize the panels. Drag on desktop or use the up/down controls on touch/keyboard. Changes save per browser/device. Reset layout restores the default without deleting telemetry.
+Start in **Dashboard**. Use the **top header** to choose a preset or Edit widgets, then add/hide, reorder and resize the panels. Drag on desktop or use the up/down controls on touch/keyboard. Changes save per browser/device without a routine success message. Reset layout restores the default without deleting telemetry.
 
 Choose a top-level tab: Dashboard, Cockpit, Chassis, Analysis, Session, Channels, Connect or Settings. Then choose a smaller screen. Phones use View/Screen drop-downs; wider displays use tabs. Scroll gestures and keyboard scrolling work with scrollbar tracks hidden.
 
