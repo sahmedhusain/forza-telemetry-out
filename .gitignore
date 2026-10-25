@@ -5,6 +5,12 @@ node_modules/
 .env
 .env.local
 
+# Private signing credentials and builder environment
+*.p12
+*.pfx
+*.p8
+electron-builder.env
+
 # OS Generated
 .DS_Store
 Thumbs.db

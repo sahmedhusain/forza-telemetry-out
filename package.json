@@ -11,7 +11,11 @@
     "test": "node --test",
     "package": "electron-builder --dir",
     "dist": "electron-builder",
-    "dist:win": "electron-builder --win nsis portable --x64 --publish never"
+    "dist:win": "electron-builder --win nsis portable --x64 --publish never",
+    "dist:win:signed": "electron-builder --win nsis portable --x64 --config.win.signExecutable=true --config.forceCodeSigning=true --publish never",
+    "dist:mac": "electron-builder --mac dmg zip --arm64 --publish never",
+    "dist:mac:intel": "electron-builder --mac dmg zip --x64 --publish never",
+    "dist:linux": "electron-builder --linux AppImage --x64 --publish never"
   },
   "repository": {
     "type": "git",

@@ -218,7 +218,9 @@ Socket tests need permission to bind loopback ports. Tests cover all 88 offsets,
 
 The [local HTTP/WebSocket API](docs/API.md) documents receiver status, network settings, history, recording controls and exports. There is no cloud service or game-control endpoint.
 
-## Windows desktop downloads
+## Desktop downloads
+
+### Windows
 
 Build both a Windows x64 Setup installer and a portable executable:
 
@@ -229,6 +231,12 @@ npm run dist:win
 Outputs are `dist/Forza-Telemetry-Out-1.6.1-Windows-x64-Setup.exe` and `dist/Forza-Telemetry-Out-1.6.1-Windows-x64-Portable.exe`. The installed desktop app includes the receiver; end users do not need Node.js. Local builds are unsigned. The preview release identifies the unverified Windows/native-game checks; signed production distribution requires target-platform verification.
 
 Check [GitHub Releases](https://github.com/sahmedhusain/forza-telemetry-out/releases) for uploaded builds and their release notes. Executables are build artifacts and are not committed to the source repository. A source push alone does not publish an installer.
+
+### macOS and Linux packages
+
+On macOS, run `npm run dist:mac` for **Apple Silicon (`arm64`) DMG/ZIP** builds, then `npm run dist:mac:intel` for **Intel (`x64`)**. Open the matching DMG and drag the app to Applications. On Linux, run `npm run dist:linux` for an x64 AppImage. These commands produce local unsigned packages and do not publish anything.
+
+For trusted publisher identities, see the [signing guide](docs/SIGNING.md): Windows Authenticode, Apple Developer ID with notarization/stapling, and Linux GPG release verification. Credentials stay outside the repository. `npm run dist:win:signed` requires a valid configured signing provider; normal builds remain unsigned.
 
 ## Version and releases
 

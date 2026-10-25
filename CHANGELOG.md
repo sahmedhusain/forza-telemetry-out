@@ -6,6 +6,7 @@
 - Give widget editor controls their own height instead of squeezing instrument content. Keep tire/slip widgets above a content-safe minimum while preserving saved layout values.
 - Recapture README GIF/PNGs with fitted custom layouts and complete widget rows; retain current language/RTL examples and static alternatives.
 - Add GitHub About description, documentation website and topics, and prepare a clearly labeled unsigned preview release with downloadable desktop builds and checksums.
+- Add explicit Apple Silicon/Intel DMG/ZIP and Linux AppImage commands, sequential macOS release builds, an opt-in signing-required Windows command, and a platform signing/notarization guide.
 
 ## 1.6.0 — 2026-10-25
 

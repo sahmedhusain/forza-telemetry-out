@@ -11,6 +11,7 @@ Start with [Getting started](../GETTING_STARTED.md) to install the receiver, con
 | [Packet reference](PROTOCOL.md) | All 88 fields, wire types, units, byte offsets and decoding assumptions |
 | [Local API](API.md) | HTTP endpoints, WebSocket events, export formats and control errors |
 | [Build and release](RELEASING.md) | Platform commands, filenames, versioning, CI, draft releases and signing |
+| [Desktop signing](SIGNING.md) | Windows publisher certificates, macOS notarization and Linux GPG signatures |
 | [Validation](VALIDATION.md) | Completed tests, viewport checks, evidence and remaining hardware limits |
 | [Design contract](DESIGN.md) | Visual direction, navigation, motion, accessibility and responsive expectations |
 | [Reference research](RESEARCH.md) / [sources](REFERENCES.md) | Ideas considered, provenance and boundaries between in-game displays and UDP data |

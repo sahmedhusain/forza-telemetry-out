@@ -91,6 +91,8 @@ Use the header focus control to expand the current screen; Escape or Exit focus 
 
 For Windows Setup/Portable EXE files use `npm run dist:win`. Build the current platform using `npm run dist`; files appear in `dist/`. Unsigned local builds can trigger platform trust prompts. Published signed/notarized installers require the maintainer's certificates; this repository does not include them.
 
+On macOS, `npm run dist:mac` makes Apple Silicon (`arm64`) DMG/ZIP files. Then run `npm run dist:mac:intel` for Intel (`x64`). Choose the correct architecture; open the DMG and drag the app to Applications. Linux x64 AppImages use `npm run dist:linux`. Read the [signing instructions](docs/SIGNING.md) for verified publisher certificates and signature checks.
+
 The packaged app uses defaults unless environment variables or a `.env` file are supplied. Place `.env` in Electron's user-data directory (normally `forza-telemetry-out` beneath the platform's application-data directory):
 
 - Windows: `%APPDATA%\forza-telemetry-out\.env`

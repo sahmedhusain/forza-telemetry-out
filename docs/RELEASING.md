@@ -15,6 +15,20 @@ npm run dist
 
 `package` makes an unpacked application for the host. `dist` creates macOS DMG/ZIP, Windows NSIS/portable, or Linux AppImage on the corresponding OS. Artifacts go to ignored `dist/`. Use native platform runners; no cross-compilation success is assumed. App icons are original companion artwork.
 
+Explicit local commands:
+
+| Command | Outputs |
+|---|---|
+| `npm run dist:win` | Unsigned Windows x64 Setup and Portable EXEs |
+| `npm run dist:win:signed` | Same targets with signing required; configure your provider first |
+| `npm run dist:mac` | Unsigned Apple Silicon arm64 DMG and ZIP; run on macOS |
+| `npm run dist:mac:intel` | Unsigned Intel x64 DMG and ZIP; run on macOS after the arm64 build |
+| `npm run dist:linux` | Linux x64 AppImage; run on Linux |
+
+The [signing guide](SIGNING.md) covers Windows Authenticode, Apple Developer ID/notarization and Linux GPG verification. Actual signing requires your publisher credentials; the normal workflow remains unsigned.
+
+macOS architectures are built sequentially because overlapping DMG operations failed locally. The workflow includes both architectures in the macOS checksum manifest; its filename describes the build runner, while each entry identifies the artifact's architecture.
+
 ## GitHub workflow
 
 The `CI` workflow tests Node 22 on Linux, Windows and macOS. `Release` runs on a pushed `v*` tag, builds on all three platforms, and uploads artifacts into a **draft** GitHub release. It does not publish the draft automatically. Workflows require the repository to be pushed to GitHub; local file creation alone does not run them.
@@ -28,7 +42,7 @@ The `CI` workflow tests Node 22 on Linux, Windows and macOS. `Release` runs on a
 
 A normal branch push runs CI, not the tag-triggered release workflow. Do not create a version tag merely to push documentation. Keep `.env`, telemetry data, recordings, certificates and build output out of source commits; `.env.example` documents supported defaults.
 
-The workflow disables automatic certificate discovery, and `build.mac.identity` is explicitly null. Binaries are unsigned by default (`build.win.signExecutable=false`, `build.mac.identity=null`). For trusted distribution, enable Windows signing and remove the explicit null macOS identity and configure electron-builder's signing/notarization credentials as repository secrets and update the workflow; never commit certificates or secrets. Signing, notarization, store submission, automatic updates and crash reporting are not configured.
+The workflow disables automatic certificate discovery, and `build.mac.identity` is explicitly null. Binaries are unsigned by default (`build.win.signExecutable=false`, `build.mac.identity=null`). For signed distribution, use the documented command overrides, configure credentials as CI secrets/Keychain/provider-managed keys and update the workflow's build and verification steps. No signing credentials, automatic notarization, store submission, automatic updates or crash reporting are configured in the normal workflow.
 
 ## Release checklist
 
