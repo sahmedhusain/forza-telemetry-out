@@ -1,0 +1,228 @@
+/**
+ * Forza Telemetry Out - Official Forza Theme CSS
+ * Authentic Forza Horizon & Forza Motorsport Visual Identity & Design System
+ */
+
+:root {
+  /* Forza Core Palette */
+  --bg-deep: #08090d;
+  --bg-surface: #0f121a;
+  --bg-card: rgba(18, 22, 31, 0.88);
+  --bg-card-border: rgba(56, 68, 92, 0.35);
+  --bg-card-hover: rgba(26, 32, 46, 0.95);
+
+  /* Forza Horizon Neon Colors */
+  --fh-pink: #ff0055;
+  --fh-magenta: #ff0099;
+  --fh-cyan: #00f0ff;
+  --fh-lime: #d4ff00;
+  --fh-yellow: #fbee22;
+
+  /* Forza Motorsport Colors */
+  --fm-red: #ff2a44;
+  --fm-amber: #ff9100;
+  --fm-gold: #ffc400;
+  --fm-titanium: #95a3b8;
+  --fm-carbon: #181c24;
+
+  /* State Colors */
+  --live-green: #00ff88;
+  --alert-red: #ff1e42;
+  --text-primary: #f0f4f8;
+  --text-secondary: #90a0b8;
+  --text-muted: #57657a;
+
+  /* Racing Font Stack */
+  --font-racing: 'Impact', 'Eurostile', 'Segoe UI Black', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-hud: 'SF Pro Display', 'Trebuchet MS', 'Arial Black', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', 'Courier New', monospace;
+
+  /* Angle Skew for Forza Racing Look */
+  --skew-angle: -9deg;
+  --skew-reverse: 9deg;
+
+  /* Shadows & Glows */
+  --glow-pink: 0 0 16px rgba(255, 0, 85, 0.65), 0 0 32px rgba(255, 0, 85, 0.3);
+  --glow-cyan: 0 0 16px rgba(0, 240, 255, 0.65), 0 0 32px rgba(0, 240, 255, 0.3);
+  --glow-lime: 0 0 16px rgba(212, 255, 0, 0.65);
+  --glow-redline: 0 0 30px rgba(255, 30, 66, 0.9), inset 0 0 20px rgba(255, 30, 66, 0.5);
+}
+
+/* Base Reset & Styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-hud);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(255, 0, 85, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.05) 0%, transparent 50%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+}
+
+/* Forza Racing Skew */
+.forza-skew {
+  transform: skewX(var(--skew-angle));
+  transform-origin: center;
+}
+
+.forza-skew-unskew {
+  transform: skewX(var(--skew-reverse));
+}
+
+/* Custom Racing Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fh-pink);
+}
+
+/* Pulse Live Animation */
+@keyframes pulseLive {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(0, 255, 136, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+  }
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--live-green);
+  display: inline-block;
+  animation: pulseLive 1.6s infinite;
+}
+
+.pulse-dot.offline {
+  background-color: #636e7b;
+  animation: none;
+}
+
+.pulse-dot.simulating {
+  background-color: var(--fh-cyan);
+  box-shadow: 0 0 10px var(--fh-cyan);
+}
+
+/* Redline Warning Strobe */
+@keyframes redlineFlash {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 15px var(--alert-red));
+  }
+  50% {
+    opacity: 0.35;
+    filter: none;
+  }
+}
+
+.redline-active {
+  animation: redlineFlash 0.12s infinite;
+}
+
+/* Carbon Fiber Backdrop Texture */
+.carbon-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.25s ease, transform 0.2s ease;
+}
+
+.carbon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--fh-pink), transparent);
+  opacity: 0.5;
+}
+
+.carbon-card:hover {
+  border-color: rgba(255, 0, 85, 0.45);
+}
+
+/* Racing Buttons */
+.forza-btn {
+  background: #141824;
+  color: #ffffff;
+  border: 1px solid #323b50;
+  padding: 8px 16px;
+  font-family: var(--font-hud);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.forza-btn:hover {
+  background: var(--fh-pink);
+  border-color: var(--fh-pink);
+  color: #ffffff;
+  box-shadow: var(--glow-pink);
+}
+
+.forza-btn.active {
+  background: var(--fh-pink);
+  border-color: var(--fh-pink);
+  box-shadow: var(--glow-pink);
+}
+
+.forza-btn-cyan:hover, .forza-btn-cyan.active {
+  background: var(--fh-cyan);
+  border-color: var(--fh-cyan);
+  color: #0c0e14;
+  box-shadow: var(--glow-cyan);
+}
+
+.forza-btn-lime:hover, .forza-btn-lime.active {
+  background: var(--fh-lime);
+  border-color: var(--fh-lime);
+  color: #0c0e14;
+  box-shadow: var(--glow-lime);
+}
+
+.forza-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}

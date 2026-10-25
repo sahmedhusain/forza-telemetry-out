@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Telemetry Out | Apex HUD & Sim Racing Telemetry</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/logos/forza-telemetry-logo.svg">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/css/forza-theme.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Top Header & Telemetry Status Bar -->
+    <header class="top-header">
+      <div class="brand-section">
+        <img src="/assets/logos/forza-telemetry-logo.svg" alt="Forza Telemetry Out" class="brand-logo">
+        <div id="gameBadge" class="gameBadge game-badge">STANDBY</div>
+        <div class="stream-indicator">
+          <span id="streamDot" class="pulse-dot offline"></span>
+          <span id="streamText">LISTENING (5300)</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button id="simBtn" class="forza-btn forza-btn-cyan">▶ DEMO DRIVE</button>
+        <button id="recBtn" class="forza-btn">● RECORD</button>
+        <button id="unitBtn" class="forza-btn">METRIC (KM/H)</button>
+        <button id="audioBtn" class="forza-btn">🔇 MUTED</button>
+        <button id="rawBtn" class="forza-btn">RAW DATA</button>
+        <button id="fsBtn" class="forza-btn">⛶ FULLSCREEN</button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+
+      <!-- LEFT COLUMN: Inputs & Kinematics -->
+      <section class="left-column" style="display: flex; flex-direction: column; gap: 14px;">
+        
+        <!-- Pedals & Steering Inputs -->
+        <div class="carbon-card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="card-title-icon">⚡</span> Driver Inputs
+            </span>
+          </div>
+          <div class="card-content inputs-container">
+            <!-- Pedal Ladder Bars -->
+            <div class="pedals-bars">
+              <!-- Throttle -->
+              <div class="pedal-col">
+                <div class="pedal-track">
+                  <div id="throttleFill" class="pedal-fill throttle-fill"></div>
+                </div>
+                <span class="pedal-label">THR</span>
+                <span id="throttleVal" class="pedal-value" style="color: #00ff88;">0%</span>
+              </div>
+              <!-- Brake -->
+              <div class="pedal-col">
+                <div class="pedal-track">
+                  <div id="brakeFill" class="pedal-fill brake-fill"></div>
+                </div>
+                <span class="pedal-label">BRK</span>
+                <span id="brakeVal" class="pedal-value" style="color: #ff1e42;">0%</span>
+              </div>
+              <!-- Clutch -->
+              <div class="pedal-col">
+                <div class="pedal-track">
+                  <div id="clutchFill" class="pedal-fill clutch-fill"></div>
+                </div>
+                <span class="pedal-label">CLT</span>
+                <span id="clutchVal" class="pedal-value" style="color: #00f0ff;">0%</span>
+              </div>
+              <!-- Handbrake -->
+              <div class="pedal-col">
+                <div class="pedal-track">
+                  <div id="handbrakeFill" class="pedal-fill handbrake-fill"></div>
+                </div>
+                <span class="pedal-label">HBK</span>
+                <span id="handbrakeVal" class="pedal-value" style="color: #ffbb00;">OFF</span>
+              </div>
+            </div>
+
+            <!-- Steering Angle -->
+            <div class="steering-section">
+              <div id="steeringWheel" class="steering-wheel-wrapper">
+                <img src="/assets/icons/steering-wheel.svg" alt="Steering Wheel">
+              </div>
+              <div class="steering-data">
+                <div id="steeringDeg" class="steering-deg">0°</div>
+                <div class="steering-bar-track">
+                  <div class="steering-bar-center"></div>
+                  <div id="steeringBarFill" class="steering-bar-fill" style="left: 50%; width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- G-Force Friction Circle (Friction Ellipse) -->
+        <div class="carbon-card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="card-title-icon">◎</span> Friction Circle (G-Meter)
+            </span>
+          </div>
+          <div class="card-content gmeter-container">
+            <canvas id="gMeterCanvas" width="220" height="220"></canvas>
+            
+            <div class="gmeter-readouts">
+              <div class="g-stat-box">
+                <div class="g-stat-label">Lateral</div>
+                <div id="latGVal" class="g-stat-val">0.00G</div>
+              </div>
+              <div class="g-stat-box">
+                <div class="g-stat-label">Longitudinal</div>
+                <div id="longGVal" class="g-stat-val">0.00G</div>
+              </div>
+              <div class="g-stat-box">
+                <div class="g-stat-label">Vertical</div>
+                <div id="vertGVal" class="g-stat-val">1.00G</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- CENTER COLUMN: Tachometer & Race HUD -->
+      <section class="center-column" style="display: flex; flex-direction: column; gap: 14px;">
+        
+        <!-- Primary Tachometer & Speedometer HUD Card -->
+        <div id="tachCard" class="carbon-card tach-hud-card">
+          
+          <!-- F1 / GT3 Style Shift Lights -->
+          <div class="shift-light-bar">
+            <div class="shift-led green"></div>
+            <div class="shift-led green"></div>
+            <div class="shift-led green"></div>
+            <div class="shift-led yellow"></div>
+            <div class="shift-led yellow"></div>
+            <div class="shift-led yellow"></div>
+            <div class="shift-led red"></div>
+            <div class="shift-led red"></div>
+            <div class="shift-led blue"></div>
+            <div class="shift-led blue"></div>
+          </div>
+
+          <!-- Canvas Arc Tachometer with Center Readout -->
+          <div class="tach-canvas-container">
+            <canvas id="tachCanvas" width="520" height="290"></canvas>
+            
+            <div class="tach-center-readout">
+              <div id="gearDisplay" class="gear-display">N</div>
+              <div class="speed-display">
+                <span id="speedVal" class="speed-val">0</span>
+                <span id="speedUnit" class="speed-unit">KM/H</span>
+              </div>
+              <div id="rpmNumeric" class="rpmNumeric rpm-numeric">0 / 9,000 RPM</div>
+            </div>
+          </div>
+
+          <!-- Car Metadata Badges -->
+          <div class="car-meta-bar">
+            <span id="carClassBadge" class="car-badge car-class-badge">S2</span>
+            <span id="carPiBadge" class="car-badge car-pi-badge">PI 995</span>
+            <span id="carDrivetrainBadge" class="car-badge car-drivetrain-badge">RWD</span>
+            <span id="carNameText" style="font-size: 13px; font-weight: 800; color: #a4b4cb; letter-spacing: 0.5px;">Porsche 911 GT3 RS</span>
+          </div>
+
+        </div>
+
+        <!-- Real-Time Telemetry Timeline Graph -->
+        <div class="carbon-card timeline-card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="card-title-icon">📈</span> Live Telemetry Trace
+            </span>
+            <div class="timeline-legend">
+              <div class="legend-item"><div class="legend-color" style="background: #00f0ff;"></div> Speed</div>
+              <div class="legend-item"><div class="legend-color" style="background: #00ff88;"></div> Throttle</div>
+              <div class="legend-item"><div class="legend-color" style="background: #ff1e42;"></div> Brake</div>
+              <div class="legend-item"><div class="legend-color" style="background: #af52de;"></div> Boost</div>
+            </div>
+          </div>
+          <div class="timeline-canvas-container">
+            <canvas id="timelineCanvas" width="600" height="160"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: Wheels, Powertrain & Lap Analytics -->
+      <section class="right-column" style="display: flex; flex-direction: column; gap: 14px;">
+        
+        <!-- 4-Wheel Matrix & Chassis Telemetry -->
+        <div class="carbon-card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="card-title-icon">🚗</span> Chassis & Tires
+            </span>
+          </div>
+          <div class="card-content">
+            <div class="wheels-matrix-container">
+              
+              <!-- Front Left Wheel -->
+              <div id="wheelFL" class="wheel-corner-card">
+                <div class="wheel-label"><span>FL</span><span>FRONT</span></div>
+                <div id="tempFL" class="temp-badge temp-optimal">20°C</div>
+                <div class="suspension-mini-track">
+                  <div id="suspFL" class="suspension-mini-fill" style="width: 50%;"></div>
+                </div>
+                <div class="wheel-stat-row"><span>Slip</span><span id="slipFL">0.00</span></div>
+              </div>
+
+              <!-- Center Chassis Wireframe -->
+              <div class="chassis-center-col">
+                <img src="/assets/icons/car-chassis.svg" alt="Car Chassis" class="chassis-img">
+              </div>
+
+              <!-- Front Right Wheel -->
+              <div id="wheelFR" class="wheel-corner-card">
+                <div class="wheel-label"><span>FR</span><span>FRONT</span></div>
+                <div id="tempFR" class="temp-badge temp-optimal">20°C</div>
+                <div class="suspension-mini-track">
+                  <div id="suspFR" class="suspension-mini-fill" style="width: 50%;"></div>
+                </div>
+                <div class="wheel-stat-row"><span>Slip</span><span id="slipFR">0.00</span></div>
+              </div>
+
+              <!-- Rear Left Wheel -->
+              <div id="wheelRL" class="wheel-corner-card" style="margin-top: 14px;">
+                <div class="wheel-label"><span>RL</span><span>REAR</span></div>
+                <div id="tempRL" class="temp-badge temp-optimal">20°C</div>
+                <div class="suspension-mini-track">
+                  <div id="suspRL" class="suspension-mini-fill" style="width: 50%;"></div>
+                </div>
+                <div class="wheel-stat-row"><span>Slip</span><span id="slipRL">0.00</span></div>
+              </div>
+
+              <!-- Spacer -->
+              <div></div>
+
+              <!-- Rear Right Wheel -->
+              <div id="wheelRR" class="wheel-corner-card" style="margin-top: 14px;">
+                <div class="wheel-label"><span>RR</span><span>REAR</span></div>
+                <div id="tempRR" class="temp-badge temp-optimal">20°C</div>
+                <div class="suspension-mini-track">
+                  <div id="suspRR" class="suspension-mini-fill" style="width: 50%;"></div>
+                </div>
+                <div class="wheel-stat-row"><span>Slip</span><span id="slipRR">0.00</span></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Powertrain Dyno & Sprint Timer -->
+        <div class="carbon-card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="card-title-icon">⚙</span> Powertrain Dyno
+            </span>
+          </div>
+          <div class="card-content dyno-gauges-row">
+            <div class="dyno-metric-box">
+              <div class="dyno-metric-label">Power Output</div>
+              <div class="dyno-metric-val"><span id="powerVal">0</span><span id="powerUnit" class="dyno-metric-unit">HP</span></div>
+            </div>
+            <div class="dyno-metric-box">
+              <div class="dyno-metric-label">Torque Output</div>
+              <div class="dyno-metric-val"><span id="torqueVal">0</span><span id="torqueUnit" class="dyno-metric-unit">NM</span></div>
+            </div>
+            <div class="dyno-metric-box">
+              <div class="dyno-metric-label">Turbo Boost</div>
+              <div class="dyno-metric-val"><span id="boostVal">0.00</span><span id="boostUnit" class="dyno-metric-unit">BAR</span></div>
+            </div>
+            <div class="dyno-metric-box">
+              <div class="dyno-metric-label">0-100 KM/H</div>
+              <div class="dyno-metric-val" style="color: #ffea00;"><span id="sprintTimeVal">--</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lap Timing & Session Telemetry -->
+        <div class="carbon-card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="card-title-icon">⏱</span> Lap & Race Stats
+            </span>
+            <div style="display: flex; gap: 8px;">
+              <span id="lapNum" class="game-badge" style="color: #ff0055;">LAP 1</span>
+              <span id="racePos" class="game-badge" style="color: #00ff88;">P1</span>
+            </div>
+          </div>
+          <div class="card-content lap-stats-grid">
+            <div class="lap-box">
+              <div class="lap-box-label">Current Lap</div>
+              <div id="currentLapTime" class="lap-box-time">0:00.000</div>
+            </div>
+            <div class="lap-box">
+              <div class="lap-box-label">Last Lap</div>
+              <div id="lastLapTime" class="lap-box-time">0:00.000</div>
+            </div>
+            <div class="lap-box">
+              <div class="lap-box-label">Best Lap</div>
+              <div id="bestLapTime" class="lap-box-time best">0:00.000</div>
+            </div>
+            <div class="lap-box">
+              <div class="lap-box-label">Track Distance</div>
+              <div id="distanceVal" class="lap-box-time" style="color: #00f0ff;">0.00 KM</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Raw Data Inspector Drawer (Slide-up modal) -->
+    <aside id="rawDataDrawer" class="raw-data-drawer">
+      <div class="drawer-header">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <h3 style="font-size: 14px; font-weight: 800; letter-spacing: 1px; color: #ffffff;">ALL FORZA TELEMETRY DATA POINTS (84+ FIELDS)</h3>
+          <input type="text" id="rawSearchInput" placeholder="Filter variables (e.g. rpm, slip, gforce)..." style="background: #0f131c; border: 1px solid #2a3449; color: #ffffff; padding: 4px 10px; border-radius: 4px; font-size: 12px; width: 240px;">
+        </div>
+        <button id="closeRawDrawer" class="forza-btn" style="padding: 4px 10px;">✕ CLOSE</button>
+      </div>
+      <div class="drawer-body">
+        <table class="raw-table">
+          <thead>
+            <tr>
+              <th style="width: 40%;">Field / Property</th>
+              <th style="width: 40%;">Live Value</th>
+              <th style="width: 20%;">Type</th>
+            </tr>
+          </thead>
+          <tbody id="rawTableBody">
+            <tr><td colspan="3" style="text-align: center; color: #6e7d95;">Waiting for telemetry stream...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="/js/units.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/gauges/tachometer.js"></script>
+  <script src="/js/gauges/g-meter.js"></script>
+  <script src="/js/gauges/charts.js"></script>
+  <script src="/js/app.js"></script>
+
+</body>
+</html>

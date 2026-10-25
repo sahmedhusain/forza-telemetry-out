@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables (keep template committed, local env ignored if preferred, or keep both)
+.env.local
+
+# OS Generated
+.DS_Store
+Thumbs.db
+
+# Telemetry session recordings / logs
+recordings/
+*.log
+
+# Electron build artifacts
+dist/
+build/
+out/

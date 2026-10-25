@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320" width="200" height="320">
+  <defs>
+    <linearGradient id="chassisGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#ff0077" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0.6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Centerline -->
+  <line x1="100" y1="20" x2="100" y2="300" stroke="#252b3b" stroke-dasharray="4 4" stroke-width="2" />
+  
+  <!-- Outer Body Silhouette -->
+  <path d="M 75 25 
+           C 85 18, 115 18, 125 25
+           C 145 35, 155 65, 155 100
+           C 155 130, 150 160, 154 210
+           C 158 245, 155 285, 138 298
+           C 125 305, 75 305, 62 298
+           C 45 285, 42 245, 46 210
+           C 50 160, 45 130, 45 100
+           C 45 65, 55 35, 75 25 Z" 
+        fill="#10131a" stroke="url(#chassisGrad)" stroke-width="2" />
+
+  <!-- Windshield -->
+  <path d="M 68 85 L 132 85 L 124 130 L 76 130 Z" fill="#181e2b" stroke="#323c52" stroke-width="1.5" />
+  
+  <!-- Rear Window -->
+  <path d="M 74 195 L 126 195 L 120 235 L 80 235 Z" fill="#181e2b" stroke="#323c52" stroke-width="1.5" />
+
+  <!-- Cockpit & Driver Position -->
+  <circle cx="100" cy="155" r="16" fill="#141924" stroke="#ff0055" stroke-width="1" stroke-dasharray="2 2" />
+
+  <!-- Axle Lines -->
+  <line x1="25" y1="75" x2="175" y2="75" stroke="#2b3447" stroke-width="2" />
+  <line x1="25" y1="245" x2="175" y2="245" stroke="#2b3447" stroke-width="2" />
+
+  <!-- Wheel Outlines (Positions: FL, FR, RL, RR) -->
+  <rect x="18" y="55" width="22" height="42" rx="4" fill="#0d0f15" stroke="#3b465e" stroke-width="2" />
+  <rect x="160" y="55" width="22" height="42" rx="4" fill="#0d0f15" stroke="#3b465e" stroke-width="2" />
+  <rect x="18" y="225" width="24" height="46" rx="4" fill="#0d0f15" stroke="#3b465e" stroke-width="2" />
+  <rect x="158" y="225" width="24" height="46" rx="4" fill="#0d0f15" stroke="#3b465e" stroke-width="2" />
+</svg>

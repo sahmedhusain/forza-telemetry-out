@@ -1,0 +1,40 @@
+{
+  "name": "forza-telemetry-out",
+  "version": "1.0.0",
+  "description": "High-performance Forza Motorsport & Horizon UDP Telemetry HUD Dashboard, Electron App & Web Analytics Engine",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "web": "node server/index.js",
+    "electron": "electron .",
+    "dev": "electron .",
+    "demo": "SIMULATION_MODE=true node server/index.js",
+    "electron:demo": "SIMULATION_MODE=true electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahmedhusain/forza-telemetry-out.git"
+  },
+  "keywords": [
+    "forza",
+    "forza-horizon",
+    "forza-motorsport",
+    "telemetry",
+    "sim-racing",
+    "dashboard",
+    "electron",
+    "udp",
+    "racing-hud",
+    "canbus",
+    "g-force"
+  ],
+  "author": "sahmedhusain",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

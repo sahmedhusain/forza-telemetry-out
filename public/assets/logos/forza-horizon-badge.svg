@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" width="160" height="48">
+  <defs>
+    <linearGradient id="fhGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff0055" />
+      <stop offset="100%" stop-color="#ff0099" />
+    </linearGradient>
+  </defs>
+  <g transform="skewX(-12)">
+    <rect x="10" y="6" width="140" height="36" rx="6" fill="#141722" stroke="url(#fhGrad)" stroke-width="2" />
+    <!-- Horizon 'H' symbol -->
+    <path d="M 24 14 L 32 14 L 32 21 L 42 21 L 42 14 L 50 14 L 50 34 L 42 34 L 42 26 L 32 26 L 32 34 L 24 34 Z" fill="url(#fhGrad)" />
+    <!-- Text -->
+    <text x="58" y="24" font-family="'Arial Black', sans-serif" font-size="12" font-weight="900" fill="#ffffff" letter-spacing="1">FORZA</text>
+    <text x="58" y="34" font-family="'Arial', sans-serif" font-size="10" font-weight="800" fill="#ff0077" letter-spacing="2">HORIZON</text>
+  </g>
+</svg>
